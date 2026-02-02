@@ -22,6 +22,12 @@ if (isset($_GET['action'])) {
         case 'save_marks':
             handleSaveMarks();
             break;
+        case 'get_db_config':
+            handleGetDbConfig();
+            break;
+        case 'save_db_config':
+            handleSaveDbConfig();
+            break;
         default:
             echo json_encode(['success' => false, 'message' => 'Acción no válida']);
     }
@@ -149,6 +155,99 @@ function handleSaveMarks() {
     }
 }
 
+function handleGetDbConfig() {
+    try {
+        $configPath = __DIR__ . '/../functions/connect.php';
+        $content = file_get_contents($configPath);
+        if ($content === false) {
+            throw new Exception('No se pudo leer el archivo de conexión');
+        }
+
+        $server = extractConfigValue($content, 'server');
+        $database = extractConfigValue($content, 'database');
+        $username = extractConfigValue($content, 'username');
+        $password = extractConfigValue($content, 'password');
+
+        $parts = array_map('trim', explode(',', $server));
+        $ip = $parts[0] ?? '';
+        $port = $parts[1] ?? '';
+
+        echo json_encode([
+            'success' => true,
+            'data' => [
+                'ip' => $ip,
+                'port' => $port,
+                'database' => $database,
+                'username' => $username,
+                'password' => $password
+            ]
+        ]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function handleSaveDbConfig() {
+    try {
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!$input) throw new Exception('Datos inválidos');
+
+        $ip = trim($input['ip'] ?? '');
+        $port = trim($input['port'] ?? '');
+        $database = trim($input['database'] ?? '');
+        $username = trim($input['username'] ?? '');
+        $password = trim($input['password'] ?? '');
+
+        if ($ip === '' || $database === '' || $username === '') {
+            throw new Exception('Completa los campos obligatorios');
+        }
+
+        $server = $ip;
+        if ($port !== '') {
+            $server .= ',' . $port;
+        }
+
+        $configPath = __DIR__ . '/../functions/connect.php';
+        $content = file_get_contents($configPath);
+        if ($content === false) {
+            throw new Exception('No se pudo leer el archivo de conexión');
+        }
+
+        $content = replaceConfigValue($content, 'server', $server);
+        $content = replaceConfigValue($content, 'database', $database);
+        $content = replaceConfigValue($content, 'username', $username);
+        $content = replaceConfigValue($content, 'password', $password);
+
+        if (file_put_contents($configPath, $content) === false) {
+            throw new Exception('No se pudo guardar el archivo de conexión');
+        }
+
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function extractConfigValue($content, $key) {
+    // Parse the configuration value from connect.php.
+    if (preg_match('/\\$' . preg_quote($key, '/') . '\\s*=\\s*"([^"]*)"/', $content, $matches)) {
+        return $matches[1];
+    }
+    return '';
+}
+
+function replaceConfigValue($content, $key, $value) {
+    // Update the configuration value in connect.php.
+    $escaped = addslashes($value);
+    $pattern = '/\\$' . preg_quote($key, '/') . '\\s*=\\s*".*?";/';
+    $replacement = '$' . $key . ' = "' . $escaped . '";';
+    $result = preg_replace($pattern, $replacement, $content);
+    if ($result === null) {
+        throw new Exception('Error al actualizar la configuración');
+    }
+    return $result;
+}
+
 
 $departments = getDepartments();
 ?>
@@ -188,6 +287,9 @@ $departments = getDepartments();
             </button>
             <button id="clean-btn" class="btn btn-primary btn-sm top-action-btn">
                 <i class="fas fa-broom"></i> Corregir duplicados
+            </button>
+            <button id="config-btn" class="btn btn-primary btn-sm top-action-btn">
+                <i class="fas fa-gear"></i> Configuración
             </button>
         </div>
     </div>
@@ -326,6 +428,85 @@ $departments = getDepartments();
             <div class="modal-footer">
                 <button type="button" id="time-picker-save" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Config modal -->
+<div class="modal fade" id="configModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuración</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#appearance-tab" type="button" role="tab">
+                            Apariencia
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#database-tab" type="button" role="tab">
+                            Base de datos
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-3">
+                    <div class="tab-pane fade show active" id="appearance-tab" role="tabpanel">
+                        <div class="config-card">
+                            <h6 class="mb-3">Tema</h6>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme-option" id="theme-light" value="light">
+                                    <label class="form-check-label" for="theme-light">Claro</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme-option" id="theme-dark" value="dark">
+                                    <label class="form-check-label" for="theme-dark">Oscuro</label>
+                                </div>
+                            </div>
+                            <p class="text-muted small mt-2">El tema se guarda en la sesión de este equipo.</p>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="database-tab" role="tabpanel">
+                        <div class="config-card">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="db-ip" class="form-label">IP</label>
+                                    <input type="text" class="form-control form-control-sm" id="db-ip" placeholder="190.7.11.199">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="db-port" class="form-label">Puerto</label>
+                                    <input type="text" class="form-control form-control-sm" id="db-port" placeholder="1433">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="db-name" class="form-label">Base de datos</label>
+                                    <input type="text" class="form-control form-control-sm" id="db-name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="db-user" class="form-label">Usuario</label>
+                                    <input type="text" class="form-control form-control-sm" id="db-user">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="db-password" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control form-control-sm" id="db-password">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-primary" id="db-save-btn">
+                                    <i class="fas fa-save me-1"></i> Guardar
+                                </button>
+                            </div>
+                            <div class="text-muted small mt-2">Se actualiza el archivo connect.php al guardar.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

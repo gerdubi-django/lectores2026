@@ -9,9 +9,33 @@ function exportarAsistenciaExcel($data) {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setTitle('Asistencia');
-    $spreadsheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+    $spreadsheet->getDefaultStyle()->getFont()->setName('Inter')->setSize(10);
 
     $headers = ['FECHA', 'TURNO', 'ENTRADA 1', 'SALIDA 1', 'ENTRADA 2', 'SALIDA 2', 'TARDANZAS', 'RETIROS', 'EXTRA'];
+
+    $titleStyle = [
+        'font' => ['bold' => true, 'size' => 14, 'color' => ['rgb' => 'FFFFFF']],
+        'alignment' => [
+            'horizontal' => Alignment::HORIZONTAL_LEFT,
+            'vertical' => Alignment::VERTICAL_CENTER
+        ],
+        'fill' => [
+            'fillType' => Fill::FILL_SOLID,
+            'startColor' => ['rgb' => '4F46E5']
+        ]
+    ];
+
+    $subtitleStyle = [
+        'font' => ['bold' => true, 'size' => 10, 'color' => ['rgb' => 'E0E7FF']],
+        'alignment' => [
+            'horizontal' => Alignment::HORIZONTAL_LEFT,
+            'vertical' => Alignment::VERTICAL_CENTER
+        ],
+        'fill' => [
+            'fillType' => Fill::FILL_SOLID,
+            'startColor' => ['rgb' => '4338CA']
+        ]
+    ];
 
     $headerStyle = [
         'font' => ['bold' => true],
@@ -21,12 +45,13 @@ function exportarAsistenciaExcel($data) {
         ],
         'fill' => [
             'fillType' => Fill::FILL_SOLID,
-            'startColor' => ['rgb' => 'D9D9D9']
+            'startColor' => ['rgb' => '111827']
         ],
         'borders' => [
             'allBorders' => ['borderStyle' => Border::BORDER_THIN]
         ]
     ];
+    $headerStyle['font']['color'] = ['rgb' => 'FFFFFF'];
 
     $rowStyle = [
         'alignment' => [
@@ -38,6 +63,24 @@ function exportarAsistenciaExcel($data) {
         ]
     ];
 
+    $userStyle = [
+        'font' => ['bold' => true, 'color' => ['rgb' => '1E1B4B']],
+        'alignment' => [
+            'horizontal' => Alignment::HORIZONTAL_LEFT,
+            'vertical' => Alignment::VERTICAL_CENTER
+        ],
+        'fill' => [
+            'fillType' => Fill::FILL_SOLID,
+            'startColor' => ['rgb' => 'EEF2FF']
+        ],
+        'borders' => [
+            'allBorders' => ['borderStyle' => Border::BORDER_THIN]
+        ]
+    ];
+
+    $totalStyle = $rowStyle;
+    $totalStyle['font'] = ['bold' => true];
+
     // Agrupar por usuario
     $grouped = [];
     foreach ($data as $row) {
@@ -47,11 +90,23 @@ function exportarAsistenciaExcel($data) {
 
     $currentRow = 1;
 
+    $sheet->mergeCells("A{$currentRow}:I{$currentRow}");
+    $sheet->setCellValue("A{$currentRow}", 'Control de Asistencia');
+    $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($titleStyle);
+    $sheet->getRowDimension($currentRow)->setRowHeight(28);
+    $currentRow++;
+
+    $sheet->mergeCells("A{$currentRow}:I{$currentRow}");
+    $sheet->setCellValue("A{$currentRow}", 'Reporte exportado ' . date('d/m/Y H:i'));
+    $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($subtitleStyle);
+    $sheet->getRowDimension($currentRow)->setRowHeight(20);
+    $currentRow += 2;
+
     foreach ($grouped as $user) {
         // Nombre del usuario
         $sheet->mergeCells("A{$currentRow}:I{$currentRow}");
         $sheet->setCellValue("A{$currentRow}", $user['name']);
-        $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($headerStyle);
+        $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($userStyle);
         $currentRow++;
 
         // Encabezado de la tabla
@@ -115,7 +170,7 @@ function exportarAsistenciaExcel($data) {
         $sheet->setCellValue("G{$currentRow}", $totalTardanza);
         $sheet->setCellValue("H{$currentRow}", $totalRetiros);
         $sheet->setCellValue("I{$currentRow}", $totalExtras);
-        $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($rowStyle);
+        $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($totalStyle);
         $currentRow++;
 
         // Fila de horas trabajadas
@@ -123,7 +178,7 @@ function exportarAsistenciaExcel($data) {
         $minutes = floor(($workedSeconds % 3600) / 60);
         $sheet->mergeCells("A{$currentRow}:I{$currentRow}");
         $sheet->setCellValue("A{$currentRow}", 'TRABAJADO: ' . sprintf('%02d:%02d', $hours, $minutes));
-        $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($rowStyle);
+        $sheet->getStyle("A{$currentRow}:I{$currentRow}")->applyFromArray($totalStyle);
 
         $currentRow += 3; // dos filas en blanco entre tablas
     }
