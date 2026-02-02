@@ -229,7 +229,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 16px;
 }
 
 .status-indicator {
@@ -387,6 +386,21 @@ body {
 
     .date-short {
         display: inline;
+    }
+}
+
+@media (max-width: 576px) {
+    .attendance-header {
+        padding: 20px;
+    }
+
+    .header-brand img {
+        height: 44px;
+    }
+
+    .top-action-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 
