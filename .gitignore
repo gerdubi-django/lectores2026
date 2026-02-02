@@ -1,0 +1,57 @@
+db/CrossChex.mdb
+# Dependencias
+/vendor/
+
+# Archivos de Composer
+composer.lock
+
+# Configuración del entorno
+.env
+.env.*.local
+
+# Cachés y logs
+/storage/*
+!/storage/.gitignore
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+# IDEs y editores
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de depuración
+*.log
+
+# Archivos de PHPUnit
+.phpunit.result.cache
+
+# Archivos generados
+/node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Archivos temporales
+*.bak
+*.tmp
+*.swp
+*.lock
+
+# Archivos de despliegue o builds
+/public/hot
+/public/storage
+/public/mix-manifest.json
+/public/build
+
+# Laravel Telescope (si lo usás)
+telescope/requests.sqlite
+
+# Otros opcionales
+*.zip
+*.tar.gz

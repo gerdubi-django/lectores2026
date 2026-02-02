@@ -1,0 +1,1497 @@
+
+<html>
+    <head>
+        <meta content='IE=EmulateIE9' http-equiv='X-UA-Compatible' />
+        <meta content='text/html;charset=UTF-8' http-equiv='Content-Type' />
+        <script type='text/javascript' src='js/functions.js'></script>
+        <script type='text/javascript' src='js/messages.js'></script>
+        <link media='all' rel='stylesheet' type='text/css' href='css/messages.css' />
+    </head>
+    <body id='messages-body' scroll='no' onresize='buttonStatusReset();'>
+        <a id='expander_td' class='expander_td' tab-index='0' onclick='showMessages(!isExpanded());return false;' role='button' aria-label='Messages section expanded, press Enter to collapse' href='javascript:void(0);'>
+          <span></span>
+        </a>
+        <div class='main-messages' id='mainDiv'>
+            <div class='panel'>
+                <a id='error' href='javascript:void(0);' role='tab' class='button' onclick='severityTabSelected(this, true)'>
+                    <img class='panel-tab-image' src='img/error.gif'/>
+                    <span class='panel-tab-text' id='espan'>Error (0)</span>
+                    <img class='expander-arrow sort-descending' src='img/expander_arrow_down.gif'/>
+                    <img class='expander-arrow sort-ascending hidden-element' src='img/expander_arrow_up.gif'/>
+                </a>
+                <a id='warning' href='javascript:void(0);' role='tab' class='button' onclick='severityTabSelected(this, true)'>
+                    <img class='panel-tab-image' src='img/warning.gif'/>
+                    <span class='panel-tab-text' id='wspan'>Warning (2)</span>
+                    <img class='expander-arrow sort-descending' src='img/expander_arrow_down.gif'/>
+                    <img class='expander-arrow sort-ascending hidden-element' src='img/expander_arrow_up.gif'/>
+                </a>
+                <a id='info' href='javascript:void(0);' role='tab' class='button' onclick='severityTabSelected(this, true)'>
+                    <img class='panel-tab-image' src='img/info.gif'/>
+                    <span class='panel-tab-text' id='ispan'>Info (3)</span>
+                    <img class='expander-arrow sort-descending' src='img/expander_arrow_down.gif'/>
+                    <img class='expander-arrow sort-ascending hidden-element' src='img/expander_arrow_up.gif'/>
+                </a>
+                <div class='messages-node-select'>
+                    <span>Messages for:</span>
+                    <select class='node-select' id='node-select' onchange='nodeSelectChanged(this)'>
+                        <option id='select-all' value='all'>All Objects</option>
+                        <option id='select-variable' value=''>Current Object</option>
+                    </select>
+                </div>
+            </div>
+            <div id='innerDiv'>
+                <div class='messages-window'>
+
+<div id='error-messages' class='all'>
+<div class='message-flex-body'>
+</div>
+</div>
+<div id='warning-messages' class='all'>
+<div class='message-flex-body'>
+<div data-estimate='9.0' data-severity='warning' class='conversion-message'>
+<tbody>
+  <tr>
+    <td>
+      <a onclick="toggle(this)" href="javascript:void(0);" class="expander-link" role="button" aria-label="A2SS0016 : Primary key column is nullable, collapsed, press Enter to expand">
+        <img class="messageMinimized" src="img/nolines_plus.gif"></img>
+      </a>
+      <img class="tableIcons" src="img/warning.gif"></img>
+      &nbsp;
+      <span dataFld="description">
+        <span>A2SS0016</span>
+        <span data-estimate='9.0' class='estimate'>
+        (9.0h)
+        </span>
+        <span>: Primary key column is nullable</span>
+        <span class='number-of-issues'>(18)</span>
+      </span>
+      <table class="hidden-element">
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="1.5" data-issues="3" data-node-id="02732468-9544-439e-bf1c-ecf269e30e43" style="display: block;" class="node-message 02732468-9544-439e-bf1c-ecf269e30e43" onclick="treeNav(&#39;02732468-9544-439e-bf1c-ecf269e30e43&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[SchTime].[PrimaryKey] (3), estimated manual conversion time: 1.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="1.0" data-issues="2" data-node-id="1628b1d4-e871-45b4-bf34-f706033622b7" style="display: block;" class="node-message 1628b1d4-e871-45b4-bf34-f706033622b7" onclick="treeNav(&#39;1628b1d4-e871-45b4-bf34-f706033622b7&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[OPClient].[PrimaryKey] (2), estimated manual conversion time: 1 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0.5" data-issues="1" data-node-id="26c9c83e-0c9d-4cc4-b7c1-bdd3073ef6a6" style="display: block;" class="node-message 26c9c83e-0c9d-4cc4-b7c1-bdd3073ef6a6" onclick="treeNav(&#39;26c9c83e-0c9d-4cc4-b7c1-bdd3073ef6a6&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[WorkCode].[PrimaryKey] (1), estimated manual conversion time: 0.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0.5" data-issues="1" data-node-id="274f6264-7493-4fc2-a91f-3d93aa3a276a" style="display: block;" class="node-message 274f6264-7493-4fc2-a91f-3d93aa3a276a" onclick="treeNav(&#39;274f6264-7493-4fc2-a91f-3d93aa3a276a&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[BasePara].[PrimaryKey] (1), estimated manual conversion time: 0.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0.5" data-issues="1" data-node-id="2b829dfb-e2a0-4aca-ab30-a7959d2364c6" style="display: block;" class="node-message 2b829dfb-e2a0-4aca-ab30-a7959d2364c6" onclick="treeNav(&#39;2b829dfb-e2a0-4aca-ab30-a7959d2364c6&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[Status].[PrimaryKey] (1), estimated manual conversion time: 0.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="1.5" data-issues="3" data-node-id="38eb52a2-7a5a-4eba-bf90-9389dfbdc70f" style="display: block;" class="node-message 38eb52a2-7a5a-4eba-bf90-9389dfbdc70f" onclick="treeNav(&#39;38eb52a2-7a5a-4eba-bf90-9389dfbdc70f&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[UserShift].[PrimaryKey] (3), estimated manual conversion time: 1.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0.5" data-issues="1" data-node-id="76f8cc88-d0f7-4e31-8c7f-f61daeb4158a" style="display: block;" class="node-message 76f8cc88-d0f7-4e31-8c7f-f61daeb4158a" onclick="treeNav(&#39;76f8cc88-d0f7-4e31-8c7f-f61daeb4158a&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[UserFinger].[PrimaryKey] (1), estimated manual conversion time: 0.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="1.0" data-issues="2" data-node-id="83f6b6e0-c030-476d-a796-8ba8882d2d5d" style="display: block;" class="node-message 83f6b6e0-c030-476d-a796-8ba8882d2d5d" onclick="treeNav(&#39;83f6b6e0-c030-476d-a796-8ba8882d2d5d&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[UserTempShift].[PrimaryKey] (2), estimated manual conversion time: 1 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0.5" data-issues="1" data-node-id="9752b49d-1a8d-4045-87e9-eadf5e311841" style="display: block;" class="node-message 9752b49d-1a8d-4045-87e9-eadf5e311841" onclick="treeNav(&#39;9752b49d-1a8d-4045-87e9-eadf5e311841&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[AccessTime].[PrimaryKey] (1), estimated manual conversion time: 0.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0.5" data-issues="1" data-node-id="a9bd999f-aab8-4f03-87cd-4029a0c093cd" style="display: block;" class="node-message a9bd999f-aab8-4f03-87cd-4029a0c093cd" onclick="treeNav(&#39;a9bd999f-aab8-4f03-87cd-4029a0c093cd&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[AccessGroup].[PrimaryKey] (1), estimated manual conversion time: 0.5 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="1.0" data-issues="2" data-node-id="ea4abf65-5f47-4545-9193-5f029d1d4858" style="display: block;" class="node-message ea4abf65-5f47-4545-9193-5f029d1d4858" onclick="treeNav(&#39;ea4abf65-5f47-4545-9193-5f029d1d4858&#39;, &#39;A2SS0016&#39;)">
+                    <img src="img/primary_key_warning.gif"></img>
+                    CrossChex - copia (2).[OPDept].[PrimaryKey] (2), estimated manual conversion time: 1 hr(s)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</div>
+<div data-estimate='0.0' data-severity='warning' class='conversion-message'>
+<tbody>
+  <tr>
+    <td>
+      <a onclick="toggle(this)" href="javascript:void(0);" class="expander-link" role="button" aria-label="A2SS0023 : Default value &#39;0&#39; added to target column, collapsed, press Enter to expand">
+        <img class="messageMinimized" src="img/nolines_plus.gif"></img>
+      </a>
+      <img class="tableIcons" src="img/warning.gif"></img>
+      &nbsp;
+      <span dataFld="description">
+        <span>A2SS0023</span>
+        <span data-estimate='0' class='estimate'>
+        
+        </span>
+        <span>: Default value &#39;0&#39; added to target column</span>
+        <span class='number-of-issues'>(19)</span>
+      </span>
+      <table class="hidden-element">
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1640eb13-25d3-4cfc-8a10-a0e4012cfeca" style="display: block;" class="node-message 1640eb13-25d3-4cfc-8a10-a0e4012cfeca" onclick="treeNav(&#39;1640eb13-25d3-4cfc-8a10-a0e4012cfeca&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[Schedule] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1e06b211-dc82-4be1-971a-5bb5c9f76768" style="display: block;" class="node-message 1e06b211-dc82-4be1-971a-5bb5c9f76768" onclick="treeNav(&#39;1e06b211-dc82-4be1-971a-5bb5c9f76768&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[StatItems] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="3" data-node-id="236cdfdd-62b4-4f94-ab91-2d4e3e5e167e" style="display: block;" class="node-message 236cdfdd-62b4-4f94-ab91-2d4e3e5e167e" onclick="treeNav(&#39;236cdfdd-62b4-4f94-ab91-2d4e3e5e167e&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[Checkinout] (3)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b" style="display: block;" class="node-message 4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b" onclick="treeNav(&#39;4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[UserLeave] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="3" data-node-id="7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7" style="display: block;" class="node-message 7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7" onclick="treeNav(&#39;7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[BasePara] (3)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="2" data-node-id="81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a" style="display: block;" class="node-message 81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a" onclick="treeNav(&#39;81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[TimeTable] (2)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="7" data-node-id="c6b104d4-a8c5-48bb-be74-2a663367b8cf" style="display: block;" class="node-message c6b104d4-a8c5-48bb-be74-2a663367b8cf" onclick="treeNav(&#39;c6b104d4-a8c5-48bb-be74-2a663367b8cf&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[Z_MemUClass] (7)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="cfbd8c41-5884-484b-a142-8aeea5b9b4d8" style="display: block;" class="node-message cfbd8c41-5884-484b-a142-8aeea5b9b4d8" onclick="treeNav(&#39;cfbd8c41-5884-484b-a142-8aeea5b9b4d8&#39;, &#39;A2SS0023&#39;)">
+                    <img src="img/table_warning.gif"></img>
+                    CrossChex - copia (2).[Z_MemRecord] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</div>
+</div>
+</div>
+<div id='info-messages' class='all'>
+<div class='message-flex-body'>
+<div data-estimate='0.0' data-severity='info' class='conversion-message'>
+<tbody>
+  <tr>
+    <td>
+      <a onclick="toggle(this)" href="javascript:void(0);" class="expander-link" role="button" aria-label="A2SS0005 : Zero-length-not-allowed flag converted, collapsed, press Enter to expand">
+        <img class="messageMinimized" src="img/nolines_plus.gif"></img>
+      </a>
+      <img class="tableIcons" src="img/info.gif"></img>
+      &nbsp;
+      <span dataFld="description">
+        <span>A2SS0005</span>
+        <span data-estimate='0' class='estimate'>
+        
+        </span>
+        <span>: Zero-length-not-allowed flag converted</span>
+        <span class='number-of-issues'>(42)</span>
+      </span>
+      <table class="hidden-element">
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="05dd6b4b-32af-4076-b129-b30e7f15ca31" style="display: block;" class="node-message 05dd6b4b-32af-4076-b129-b30e7f15ca31" onclick="treeNav(&#39;05dd6b4b-32af-4076-b129-b30e7f15ca31&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserFinger] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="3" data-node-id="08ab8b92-9d6e-4c0b-afa6-5d142c7deeee" style="display: block;" class="node-message 08ab8b92-9d6e-4c0b-afa6-5d142c7deeee" onclick="treeNav(&#39;08ab8b92-9d6e-4c0b-afa6-5d142c7deeee&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[MemStat] (3)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="12bfea20-a50d-4668-b19c-0fda91177a38" style="display: block;" class="node-message 12bfea20-a50d-4668-b19c-0fda91177a38" onclick="treeNav(&#39;12bfea20-a50d-4668-b19c-0fda91177a38&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[WorkCode] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1640eb13-25d3-4cfc-8a10-a0e4012cfeca" style="display: block;" class="node-message 1640eb13-25d3-4cfc-8a10-a0e4012cfeca" onclick="treeNav(&#39;1640eb13-25d3-4cfc-8a10-a0e4012cfeca&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Schedule] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1e06b211-dc82-4be1-971a-5bb5c9f76768" style="display: block;" class="node-message 1e06b211-dc82-4be1-971a-5bb5c9f76768" onclick="treeNav(&#39;1e06b211-dc82-4be1-971a-5bb5c9f76768&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[StatItems] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="236cdfdd-62b4-4f94-ab91-2d4e3e5e167e" style="display: block;" class="node-message 236cdfdd-62b4-4f94-ab91-2d4e3e5e167e" onclick="treeNav(&#39;236cdfdd-62b4-4f94-ab91-2d4e3e5e167e&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Checkinout] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="26d26b7b-3b9c-443f-b183-64396693b8e6" style="display: block;" class="node-message 26d26b7b-3b9c-443f-b183-64396693b8e6" onclick="treeNav(&#39;26d26b7b-3b9c-443f-b183-64396693b8e6&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[OPLog] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="30372987-0c91-4ca9-820c-af8bc129fa96" style="display: block;" class="node-message 30372987-0c91-4ca9-820c-af8bc129fa96" onclick="treeNav(&#39;30372987-0c91-4ca9-820c-af8bc129fa96&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserPower] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="3055f792-234f-4323-b29d-48be38722e61" style="display: block;" class="node-message 3055f792-234f-4323-b29d-48be38722e61" onclick="treeNav(&#39;3055f792-234f-4323-b29d-48be38722e61&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[OPinfo] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="358d0c6e-87a5-44a5-8784-e68ceb017769" style="display: block;" class="node-message 358d0c6e-87a5-44a5-8784-e68ceb017769" onclick="treeNav(&#39;358d0c6e-87a5-44a5-8784-e68ceb017769&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[DeviceGroup] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b" style="display: block;" class="node-message 4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b" onclick="treeNav(&#39;4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserLeave] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="4f26434f-930a-402e-9932-0c1b9bff8858" style="display: block;" class="node-message 4f26434f-930a-402e-9932-0c1b9bff8858" onclick="treeNav(&#39;4f26434f-930a-402e-9932-0c1b9bff8858&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserAutoClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="3" data-node-id="5344bdb4-f2bc-4b55-9636-e22ddc5405ba" style="display: block;" class="node-message 5344bdb4-f2bc-4b55-9636-e22ddc5405ba" onclick="treeNav(&#39;5344bdb4-f2bc-4b55-9636-e22ddc5405ba&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserShift] (3)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="2" data-node-id="6023aa0f-528e-4f8d-8984-3b6d6f2a1dd2" style="display: block;" class="node-message 6023aa0f-528e-4f8d-8984-3b6d6f2a1dd2" onclick="treeNav(&#39;6023aa0f-528e-4f8d-8984-3b6d6f2a1dd2&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserTempShift] (2)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="6371601d-3a4c-49cf-9228-0ceba0c294e4" style="display: block;" class="node-message 6371601d-3a4c-49cf-9228-0ceba0c294e4" onclick="treeNav(&#39;6371601d-3a4c-49cf-9228-0ceba0c294e4&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Holiday] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="2" data-node-id="65e7ddd2-7032-45ef-87bc-f980aa4dc542" style="display: block;" class="node-message 65e7ddd2-7032-45ef-87bc-f980aa4dc542" onclick="treeNav(&#39;65e7ddd2-7032-45ef-87bc-f980aa4dc542&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[DefineField] (2)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="2" data-node-id="6788ccc4-7553-4955-b31e-c604eed908ff" style="display: block;" class="node-message 6788ccc4-7553-4955-b31e-c604eed908ff" onclick="treeNav(&#39;6788ccc4-7553-4955-b31e-c604eed908ff&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[FingerClient] (2)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="6bf95bf8-930d-4be1-823a-3bb9f9fe71bd" style="display: block;" class="node-message 6bf95bf8-930d-4be1-823a-3bb9f9fe71bd" onclick="treeNav(&#39;6bf95bf8-930d-4be1-823a-3bb9f9fe71bd&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Status] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7" style="display: block;" class="node-message 7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7" onclick="treeNav(&#39;7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[BasePara] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="81e59b09-4f8a-4df0-85b0-f4b8fa02d228" style="display: block;" class="node-message 81e59b09-4f8a-4df0-85b0-f4b8fa02d228" onclick="treeNav(&#39;81e59b09-4f8a-4df0-85b0-f4b8fa02d228&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Dept] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="7" data-node-id="81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a" style="display: block;" class="node-message 81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a" onclick="treeNav(&#39;81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[TimeTable] (7)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="2" data-node-id="b612a45f-f930-4ef0-bbd8-8ab153e03b22" style="display: block;" class="node-message b612a45f-f930-4ef0-bbd8-8ab153e03b22" onclick="treeNav(&#39;b612a45f-f930-4ef0-bbd8-8ab153e03b22&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[OutProg] (2)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="bc16e759-42a5-472e-86cf-fade355cf03d" style="display: block;" class="node-message bc16e759-42a5-472e-86cf-fade355cf03d" onclick="treeNav(&#39;bc16e759-42a5-472e-86cf-fade355cf03d&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemAbnor] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="c6b104d4-a8c5-48bb-be74-2a663367b8cf" style="display: block;" class="node-message c6b104d4-a8c5-48bb-be74-2a663367b8cf" onclick="treeNav(&#39;c6b104d4-a8c5-48bb-be74-2a663367b8cf&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemUClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ce4a6b64-d1c3-4ab4-abd2-3dce8f93feba" style="display: block;" class="node-message ce4a6b64-d1c3-4ab4-abd2-3dce8f93feba" onclick="treeNav(&#39;ce4a6b64-d1c3-4ab4-abd2-3dce8f93feba&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[CheckLog] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="cfbd8c41-5884-484b-a142-8aeea5b9b4d8" style="display: block;" class="node-message cfbd8c41-5884-484b-a142-8aeea5b9b4d8" onclick="treeNav(&#39;cfbd8c41-5884-484b-a142-8aeea5b9b4d8&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemRecord] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="f34be083-fb89-413a-83ce-72f41510a86c" style="display: block;" class="node-message f34be083-fb89-413a-83ce-72f41510a86c" onclick="treeNav(&#39;f34be083-fb89-413a-83ce-72f41510a86c&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Userinfo] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="fdf6281c-fb3b-4615-af87-adf10469cec6" style="display: block;" class="node-message fdf6281c-fb3b-4615-af87-adf10469cec6" onclick="treeNav(&#39;fdf6281c-fb3b-4615-af87-adf10469cec6&#39;, &#39;A2SS0005&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[LeaveClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</div>
+<div data-estimate='0.0' data-severity='info' class='conversion-message'>
+<tbody>
+  <tr>
+    <td>
+      <a onclick="toggle(this)" href="javascript:void(0);" class="expander-link" role="button" aria-label="A2SS0020 : New timestamp column created, collapsed, press Enter to expand">
+        <img class="messageMinimized" src="img/nolines_plus.gif"></img>
+      </a>
+      <img class="tableIcons" src="img/info.gif"></img>
+      &nbsp;
+      <span dataFld="description">
+        <span>A2SS0020</span>
+        <span data-estimate='0' class='estimate'>
+        
+        </span>
+        <span>: New timestamp column created</span>
+        <span class='number-of-issues'>(15)</span>
+      </span>
+      <table class="hidden-element">
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="05dd6b4b-32af-4076-b129-b30e7f15ca31" style="display: block;" class="node-message 05dd6b4b-32af-4076-b129-b30e7f15ca31" onclick="treeNav(&#39;05dd6b4b-32af-4076-b129-b30e7f15ca31&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserFinger] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="08ab8b92-9d6e-4c0b-afa6-5d142c7deeee" style="display: block;" class="node-message 08ab8b92-9d6e-4c0b-afa6-5d142c7deeee" onclick="treeNav(&#39;08ab8b92-9d6e-4c0b-afa6-5d142c7deeee&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[MemStat] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="12bfea20-a50d-4668-b19c-0fda91177a38" style="display: block;" class="node-message 12bfea20-a50d-4668-b19c-0fda91177a38" onclick="treeNav(&#39;12bfea20-a50d-4668-b19c-0fda91177a38&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[WorkCode] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1640eb13-25d3-4cfc-8a10-a0e4012cfeca" style="display: block;" class="node-message 1640eb13-25d3-4cfc-8a10-a0e4012cfeca" onclick="treeNav(&#39;1640eb13-25d3-4cfc-8a10-a0e4012cfeca&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Schedule] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1e06b211-dc82-4be1-971a-5bb5c9f76768" style="display: block;" class="node-message 1e06b211-dc82-4be1-971a-5bb5c9f76768" onclick="treeNav(&#39;1e06b211-dc82-4be1-971a-5bb5c9f76768&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[StatItems] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="236cdfdd-62b4-4f94-ab91-2d4e3e5e167e" style="display: block;" class="node-message 236cdfdd-62b4-4f94-ab91-2d4e3e5e167e" onclick="treeNav(&#39;236cdfdd-62b4-4f94-ab91-2d4e3e5e167e&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Checkinout] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b" style="display: block;" class="node-message 4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b" onclick="treeNav(&#39;4e9f6f80-37c3-46bf-888a-9a70c8ad9b8b&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserLeave] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="6023aa0f-528e-4f8d-8984-3b6d6f2a1dd2" style="display: block;" class="node-message 6023aa0f-528e-4f8d-8984-3b6d6f2a1dd2" onclick="treeNav(&#39;6023aa0f-528e-4f8d-8984-3b6d6f2a1dd2&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[UserTempShift] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7" style="display: block;" class="node-message 7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7" onclick="treeNav(&#39;7fc605ea-bdfa-43c6-a7f6-ea24c08bbeb7&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[BasePara] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a" style="display: block;" class="node-message 81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a" onclick="treeNav(&#39;81f971a3-d0a7-48f0-9d7c-3a0d5ed3aa3a&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[TimeTable] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="bc16e759-42a5-472e-86cf-fade355cf03d" style="display: block;" class="node-message bc16e759-42a5-472e-86cf-fade355cf03d" onclick="treeNav(&#39;bc16e759-42a5-472e-86cf-fade355cf03d&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemAbnor] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="c6b104d4-a8c5-48bb-be74-2a663367b8cf" style="display: block;" class="node-message c6b104d4-a8c5-48bb-be74-2a663367b8cf" onclick="treeNav(&#39;c6b104d4-a8c5-48bb-be74-2a663367b8cf&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemUClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="cfbd8c41-5884-484b-a142-8aeea5b9b4d8" style="display: block;" class="node-message cfbd8c41-5884-484b-a142-8aeea5b9b4d8" onclick="treeNav(&#39;cfbd8c41-5884-484b-a142-8aeea5b9b4d8&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemRecord] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="f34be083-fb89-413a-83ce-72f41510a86c" style="display: block;" class="node-message f34be083-fb89-413a-83ce-72f41510a86c" onclick="treeNav(&#39;f34be083-fb89-413a-83ce-72f41510a86c&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[Userinfo] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="fdf6281c-fb3b-4615-af87-adf10469cec6" style="display: block;" class="node-message fdf6281c-fb3b-4615-af87-adf10469cec6" onclick="treeNav(&#39;fdf6281c-fb3b-4615-af87-adf10469cec6&#39;, &#39;A2SS0020&#39;)">
+                    <img src="img/table_info.gif"></img>
+                    CrossChex - copia (2).[LeaveClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</div>
+<div data-estimate='0.0' data-severity='info' class='conversion-message'>
+<tbody>
+  <tr>
+    <td>
+      <a onclick="toggle(this)" href="javascript:void(0);" class="expander-link" role="button" aria-label="A2SS0029 : Identifier name was changed, collapsed, press Enter to expand">
+        <img class="messageMinimized" src="img/nolines_plus.gif"></img>
+      </a>
+      <img class="tableIcons" src="img/info.gif"></img>
+      &nbsp;
+      <span dataFld="description">
+        <span>A2SS0029</span>
+        <span data-estimate='0' class='estimate'>
+        
+        </span>
+        <span>: Identifier name was changed</span>
+        <span class='number-of-issues'>(57)</span>
+      </span>
+      <table class="hidden-element">
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="02732468-9544-439e-bf1c-ecf269e30e43" style="display: block;" class="node-message 02732468-9544-439e-bf1c-ecf269e30e43" onclick="treeNav(&#39;02732468-9544-439e-bf1c-ecf269e30e43&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[SchTime].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="05a9ed85-8d98-40da-971a-bf1666593c64" style="display: block;" class="node-message 05a9ed85-8d98-40da-971a-bf1666593c64" onclick="treeNav(&#39;05a9ed85-8d98-40da-971a-bf1666593c64&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemAbnor].[IX_Z_MemAbnor] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="072e2fa4-705c-48c7-a2af-0748cad7865b" style="display: block;" class="node-message 072e2fa4-705c-48c7-a2af-0748cad7865b" onclick="treeNav(&#39;072e2fa4-705c-48c7-a2af-0748cad7865b&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Userinfo].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="08937295-061e-4a7d-83f0-1d0b5c08b16c" style="display: block;" class="node-message 08937295-061e-4a7d-83f0-1d0b5c08b16c" onclick="treeNav(&#39;08937295-061e-4a7d-83f0-1d0b5c08b16c&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Dept].[IX_DeptName] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="0fcf67b1-8325-469b-b66d-8119c13eb2e9" style="display: block;" class="node-message 0fcf67b1-8325-469b-b66d-8119c13eb2e9" onclick="treeNav(&#39;0fcf67b1-8325-469b-b66d-8119c13eb2e9&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[FingerClient].[IX_ClientNumber] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1628b1d4-e871-45b4-bf34-f706033622b7" style="display: block;" class="node-message 1628b1d4-e871-45b4-bf34-f706033622b7" onclick="treeNav(&#39;1628b1d4-e871-45b4-bf34-f706033622b7&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[OPClient].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="17ddf6a2-e4d6-4cec-9c30-8355a60b3f36" style="display: block;" class="node-message 17ddf6a2-e4d6-4cec-9c30-8355a60b3f36" onclick="treeNav(&#39;17ddf6a2-e4d6-4cec-9c30-8355a60b3f36&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/index_info.gif"></img>
+                    CrossChex - copia (2).[Userinfo].[IX_Deptid] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="197b6b04-d9bb-4533-9cb4-e2571588d3ab" style="display: block;" class="node-message 197b6b04-d9bb-4533-9cb4-e2571588d3ab" onclick="treeNav(&#39;197b6b04-d9bb-4533-9cb4-e2571588d3ab&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[StatItems].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="1a446c74-40e2-4fef-871c-fa7fd045dcc8" style="display: block;" class="node-message 1a446c74-40e2-4fef-871c-fa7fd045dcc8" onclick="treeNav(&#39;1a446c74-40e2-4fef-871c-fa7fd045dcc8&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[UserLeave].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="262175a6-f55b-467c-becd-527a75480046" style="display: block;" class="node-message 262175a6-f55b-467c-becd-527a75480046" onclick="treeNav(&#39;262175a6-f55b-467c-becd-527a75480046&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[OPLog].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="26c9c83e-0c9d-4cc4-b7c1-bdd3073ef6a6" style="display: block;" class="node-message 26c9c83e-0c9d-4cc4-b7c1-bdd3073ef6a6" onclick="treeNav(&#39;26c9c83e-0c9d-4cc4-b7c1-bdd3073ef6a6&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[WorkCode].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="274f6264-7493-4fc2-a91f-3d93aa3a276a" style="display: block;" class="node-message 274f6264-7493-4fc2-a91f-3d93aa3a276a" onclick="treeNav(&#39;274f6264-7493-4fc2-a91f-3d93aa3a276a&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[BasePara].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="29cbd0c5-6a63-4ccf-a289-68d332917065" style="display: block;" class="node-message 29cbd0c5-6a63-4ccf-a289-68d332917065" onclick="treeNav(&#39;29cbd0c5-6a63-4ccf-a289-68d332917065&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Holiday].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="2b829dfb-e2a0-4aca-ab30-a7959d2364c6" style="display: block;" class="node-message 2b829dfb-e2a0-4aca-ab30-a7959d2364c6" onclick="treeNav(&#39;2b829dfb-e2a0-4aca-ab30-a7959d2364c6&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Status].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="32faeab2-86ac-45f9-9bc3-1479001f54ac" style="display: block;" class="node-message 32faeab2-86ac-45f9-9bc3-1479001f54ac" onclick="treeNav(&#39;32faeab2-86ac-45f9-9bc3-1479001f54ac&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/index_info.gif"></img>
+                    CrossChex - copia (2).[Userinfo].[IX_Groupid] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="377385c4-aa30-4f04-8e53-e142d43631be" style="display: block;" class="node-message 377385c4-aa30-4f04-8e53-e142d43631be" onclick="treeNav(&#39;377385c4-aa30-4f04-8e53-e142d43631be&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[TimeTable].[IX_Timename] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="38eb52a2-7a5a-4eba-bf90-9389dfbdc70f" style="display: block;" class="node-message 38eb52a2-7a5a-4eba-bf90-9389dfbdc70f" onclick="treeNav(&#39;38eb52a2-7a5a-4eba-bf90-9389dfbdc70f&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[UserShift].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="400989b1-359d-4e9b-93f2-0670792d7dff" style="display: block;" class="node-message 400989b1-359d-4e9b-93f2-0670792d7dff" onclick="treeNav(&#39;400989b1-359d-4e9b-93f2-0670792d7dff&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Checkinout].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="476c4c61-a122-4aac-88d0-43401c93aa93" style="display: block;" class="node-message 476c4c61-a122-4aac-88d0-43401c93aa93" onclick="treeNav(&#39;476c4c61-a122-4aac-88d0-43401c93aa93&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/index_info.gif"></img>
+                    CrossChex - copia (2).[FingerClient].[IX_Floorid] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="4bbcfa4c-749d-41d1-aa6e-025a90dc1283" style="display: block;" class="node-message 4bbcfa4c-749d-41d1-aa6e-025a90dc1283" onclick="treeNav(&#39;4bbcfa4c-749d-41d1-aa6e-025a90dc1283&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[OPinfo].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="519d3728-d3f5-45f1-8c20-bfca778632b2" style="display: block;" class="node-message 519d3728-d3f5-45f1-8c20-bfca778632b2" onclick="treeNav(&#39;519d3728-d3f5-45f1-8c20-bfca778632b2&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Dept].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="54564ada-d5b3-4fdd-8a07-ada970d51226" style="display: block;" class="node-message 54564ada-d5b3-4fdd-8a07-ada970d51226" onclick="treeNav(&#39;54564ada-d5b3-4fdd-8a07-ada970d51226&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[UserAutoClass].[IX_UserAutoClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="59b055d6-b548-4ce6-9129-9d37c598ccb6" style="display: block;" class="node-message 59b055d6-b548-4ce6-9129-9d37c598ccb6" onclick="treeNav(&#39;59b055d6-b548-4ce6-9129-9d37c598ccb6&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemAbnor].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="62f089df-a2f8-4bd4-84af-af2f0f518247" style="display: block;" class="node-message 62f089df-a2f8-4bd4-84af-af2f0f518247" onclick="treeNav(&#39;62f089df-a2f8-4bd4-84af-af2f0f518247&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[UserLeave].[IX_UserLeave] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="6e08f846-e473-4ccb-9a86-5f85188f6ebd" style="display: block;" class="node-message 6e08f846-e473-4ccb-9a86-5f85188f6ebd" onclick="treeNav(&#39;6e08f846-e473-4ccb-9a86-5f85188f6ebd&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[LeaveClass].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="6f32fa5e-d150-47e3-8b43-a4138eed8631" style="display: block;" class="node-message 6f32fa5e-d150-47e3-8b43-a4138eed8631" onclick="treeNav(&#39;6f32fa5e-d150-47e3-8b43-a4138eed8631&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[CheckLog].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="71bda183-340d-486b-8c59-abdc78ea5ded" style="display: block;" class="node-message 71bda183-340d-486b-8c59-abdc78ea5ded" onclick="treeNav(&#39;71bda183-340d-486b-8c59-abdc78ea5ded&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[DefineField].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="76f8cc88-d0f7-4e31-8c7f-f61daeb4158a" style="display: block;" class="node-message 76f8cc88-d0f7-4e31-8c7f-f61daeb4158a" onclick="treeNav(&#39;76f8cc88-d0f7-4e31-8c7f-f61daeb4158a&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[UserFinger].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="77091203-1637-4084-b030-32ece2a678bd" style="display: block;" class="node-message 77091203-1637-4084-b030-32ece2a678bd" onclick="treeNav(&#39;77091203-1637-4084-b030-32ece2a678bd&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/index_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemAbnor].[IX_EndTime] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="774a6175-989f-4d0b-9741-0630bf631a2d" style="display: block;" class="node-message 774a6175-989f-4d0b-9741-0630bf631a2d" onclick="treeNav(&#39;774a6175-989f-4d0b-9741-0630bf631a2d&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Holiday].[IX_Holiday] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="8362391b-fc69-459f-bc8c-2fa33f22351f" style="display: block;" class="node-message 8362391b-fc69-459f-bc8c-2fa33f22351f" onclick="treeNav(&#39;8362391b-fc69-459f-bc8c-2fa33f22351f&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[MemStat].[Index_42BABA7C_7454_4BA3] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="83f6b6e0-c030-476d-a796-8ba8882d2d5d" style="display: block;" class="node-message 83f6b6e0-c030-476d-a796-8ba8882d2d5d" onclick="treeNav(&#39;83f6b6e0-c030-476d-a796-8ba8882d2d5d&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[UserTempShift].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="8ba4948e-1696-4feb-98bc-180a20c37780" style="display: block;" class="node-message 8ba4948e-1696-4feb-98bc-180a20c37780" onclick="treeNav(&#39;8ba4948e-1696-4feb-98bc-180a20c37780&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[UserPower].[IX_UserPower] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="904fc6ea-810b-4e03-8d7c-fb25a3be3b7f" style="display: block;" class="node-message 904fc6ea-810b-4e03-8d7c-fb25a3be3b7f" onclick="treeNav(&#39;904fc6ea-810b-4e03-8d7c-fb25a3be3b7f&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Checkinout].[IX_Checkinout] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="9394cbf4-5549-47e4-afe4-748d77a3eef1" style="display: block;" class="node-message 9394cbf4-5549-47e4-afe4-748d77a3eef1" onclick="treeNav(&#39;9394cbf4-5549-47e4-afe4-748d77a3eef1&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemUClass].[IX_Z_MemUClass] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="9618a168-da10-43d2-815c-812ee843bcd4" style="display: block;" class="node-message 9618a168-da10-43d2-815c-812ee843bcd4" onclick="treeNav(&#39;9618a168-da10-43d2-815c-812ee843bcd4&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[LeaveClass].[IX_Classname] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="9752b49d-1a8d-4045-87e9-eadf5e311841" style="display: block;" class="node-message 9752b49d-1a8d-4045-87e9-eadf5e311841" onclick="treeNav(&#39;9752b49d-1a8d-4045-87e9-eadf5e311841&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[AccessTime].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="a11b4d75-e735-4d24-9a59-16478286952f" style="display: block;" class="node-message a11b4d75-e735-4d24-9a59-16478286952f" onclick="treeNav(&#39;a11b4d75-e735-4d24-9a59-16478286952f&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[OPinfo].[IX_OPName] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="a1b9423d-4e97-4235-805a-5d4bccd2cad5" style="display: block;" class="node-message a1b9423d-4e97-4235-805a-5d4bccd2cad5" onclick="treeNav(&#39;a1b9423d-4e97-4235-805a-5d4bccd2cad5&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[TimeTable].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="a4bfa69e-49ae-46b4-b6e5-92d1ecefeacd" style="display: block;" class="node-message a4bfa69e-49ae-46b4-b6e5-92d1ecefeacd" onclick="treeNav(&#39;a4bfa69e-49ae-46b4-b6e5-92d1ecefeacd&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[UserAutoClass].[Userid] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="a82657a4-22ae-4508-b713-cab67f0240a6" style="display: block;" class="node-message a82657a4-22ae-4508-b713-cab67f0240a6" onclick="treeNav(&#39;a82657a4-22ae-4508-b713-cab67f0240a6&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[OPGroup].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="a9bd999f-aab8-4f03-87cd-4029a0c093cd" style="display: block;" class="node-message a9bd999f-aab8-4f03-87cd-4029a0c093cd" onclick="treeNav(&#39;a9bd999f-aab8-4f03-87cd-4029a0c093cd&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[AccessGroup].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ac3cf239-941a-424b-8634-9ab045337f9f" style="display: block;" class="node-message ac3cf239-941a-424b-8634-9ab045337f9f" onclick="treeNav(&#39;ac3cf239-941a-424b-8634-9ab045337f9f&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Userinfo].[IX_UserCode] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ad78d7b9-0516-4656-bd7e-6745701b5c54" style="display: block;" class="node-message ad78d7b9-0516-4656-bd7e-6745701b5c54" onclick="treeNav(&#39;ad78d7b9-0516-4656-bd7e-6745701b5c54&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[UserAutoClass].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="cd2a422d-acd1-4481-966c-cf47df0c08a0" style="display: block;" class="node-message cd2a422d-acd1-4481-966c-cf47df0c08a0" onclick="treeNav(&#39;cd2a422d-acd1-4481-966c-cf47df0c08a0&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemRecord].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ce93387e-e66d-415f-a2a3-9a2b85eb5b07" style="display: block;" class="node-message ce93387e-e66d-415f-a2a3-9a2b85eb5b07" onclick="treeNav(&#39;ce93387e-e66d-415f-a2a3-9a2b85eb5b07&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[FingerClient].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="e90c287a-cb61-475d-8af0-2298a4b942ee" style="display: block;" class="node-message e90c287a-cb61-475d-8af0-2298a4b942ee" onclick="treeNav(&#39;e90c287a-cb61-475d-8af0-2298a4b942ee&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Schedule].[IX_Schname] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="e9aa405d-8b93-45c6-b084-7c0a24ae8f3c" style="display: block;" class="node-message e9aa405d-8b93-45c6-b084-7c0a24ae8f3c" onclick="treeNav(&#39;e9aa405d-8b93-45c6-b084-7c0a24ae8f3c&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemRecord].[IX_Z_MemRecord] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ea4abf65-5f47-4545-9193-5f029d1d4858" style="display: block;" class="node-message ea4abf65-5f47-4545-9193-5f029d1d4858" onclick="treeNav(&#39;ea4abf65-5f47-4545-9193-5f029d1d4858&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[OPDept].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ea8eef9b-7038-42a6-9928-a3530a1d1489" style="display: block;" class="node-message ea8eef9b-7038-42a6-9928-a3530a1d1489" onclick="treeNav(&#39;ea8eef9b-7038-42a6-9928-a3530a1d1489&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[UserPower].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ebded454-da58-457e-9378-9c9e7713f628" style="display: block;" class="node-message ebded454-da58-457e-9378-9c9e7713f628" onclick="treeNav(&#39;ebded454-da58-457e-9378-9c9e7713f628&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Z_MemUClass].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="ed1a4881-bc71-44ad-8aab-963d422a7fb1" style="display: block;" class="node-message ed1a4881-bc71-44ad-8aab-963d422a7fb1" onclick="treeNav(&#39;ed1a4881-bc71-44ad-8aab-963d422a7fb1&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[DeviceGroup].[Index_95227D51_3224_4775] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="edcaff43-7f9f-4be4-a237-b6c844b032cc" style="display: block;" class="node-message edcaff43-7f9f-4be4-a237-b6c844b032cc" onclick="treeNav(&#39;edcaff43-7f9f-4be4-a237-b6c844b032cc&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/index_info.gif"></img>
+                    CrossChex - copia (2).[CheckLog].[IX_Checktime] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="f46dddb2-21cf-43d0-ac40-e430aa2fe562" style="display: block;" class="node-message f46dddb2-21cf-43d0-ac40-e430aa2fe562" onclick="treeNav(&#39;f46dddb2-21cf-43d0-ac40-e430aa2fe562&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/unique_constraint_info.gif"></img>
+                    CrossChex - copia (2).[WorkCode].[IX_WorkName] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="f7ec4ef6-69e6-45a4-9082-404ca81101e6" style="display: block;" class="node-message f7ec4ef6-69e6-45a4-9082-404ca81101e6" onclick="treeNav(&#39;f7ec4ef6-69e6-45a4-9082-404ca81101e6&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[Schedule].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="fb4d8886-7230-415f-8ffe-c5d0627a1bce" style="display: block;" class="node-message fb4d8886-7230-415f-8ffe-c5d0627a1bce" onclick="treeNav(&#39;fb4d8886-7230-415f-8ffe-c5d0627a1bce&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/index_info.gif"></img>
+                    CrossChex - copia (2).[CheckLog].[IX_Userid] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <div style="CURSOR: pointer; POSITION: relative; LEFT: 43px">
+                  <a href="javascript:void(0);" role="button" data-estimate="0" data-issues="1" data-node-id="fcd03785-6982-4178-9cb2-76977fffac10" style="display: block;" class="node-message fcd03785-6982-4178-9cb2-76977fffac10" onclick="treeNav(&#39;fcd03785-6982-4178-9cb2-76977fffac10&#39;, &#39;A2SS0029&#39;)">
+                    <img src="img/primary_key_info.gif"></img>
+                    CrossChex - copia (2).[OutProg].[PrimaryKey] (1)</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</tbody>
+</div>
+</div>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

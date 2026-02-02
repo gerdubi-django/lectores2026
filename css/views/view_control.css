@@ -1,0 +1,400 @@
+/* Estilos para el Control de Asistencia */
+
+.attendance-control {
+    margin: 20px 0;
+}
+
+.attendance-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+}
+
+.attendance-header h2 {
+    margin: 0;
+    font-weight: 300;
+}
+
+.filters-section {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.attendance-table-container {
+    background: white;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-table {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.attendance-table th {
+    background-color: #495057;
+    color: white;
+    border: none;
+    padding: 12px 8px;
+    text-align: center!important;
+    font-weight: 500;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.attendance-table td {
+    padding: 10px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center!important;
+}
+
+/* Estados de las filas */
+.row-normal {
+    background-color: #ffffff;
+}
+
+.row-normal:hover {
+    background-color: #f8f9fa;
+}
+
+.row-warning,
+.row-warning td {
+    background-color: #fff3b0 !important;
+}
+
+.row-warning {
+    border-left: 4px solid #ffc107;
+}
+
+.row-warning:hover,
+.row-warning:hover td {
+    background-color: #ffeaa7 !important;
+}
+
+.row-absent,
+.row-absent td {
+    background-color: #ffd1d1 !important;
+}
+
+.row-absent {
+    border-left: 4px solid #dc3545;
+}
+
+.row-absent:hover,
+.row-absent:hover td {
+    background-color: #f5c6cb !important;
+}
+
+/* Resaltados dinámicos */
+.highlight-warning {
+    background-color: #fff3b0 !important;
+}
+
+.highlight-absent {
+    background-color: #ffd1d1 !important;
+}
+
+/* Columnas específicas */
+.col-user {
+    text-align: left !important;
+    min-width: 150px;
+}
+
+.col-date {
+    min-width: 120px;
+    font-weight: 500;
+}
+
+.col-shifts {
+    min-width: 200px;
+    text-align: left !important;
+}
+
+.col-times {
+    min-width: 120px;
+}
+
+/* Badges para horarios */
+.badge-info {
+    background-color: #17a2b8;
+    color: white;
+    font-size: 0.75rem;
+    margin: 1px;
+}
+.badge-new {
+    border: 2px solid #0d6efd;
+}
+
+.badge-shift {
+    background-color: #6c757d;
+    color: white;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin: 2px 0;
+    padding: 4px 8px;
+}
+
+/* Indicadores de estado */
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.status-normal {
+    background-color: #28a745;
+}
+
+.status-warning {
+    background-color: #ffc107;
+}
+
+.status-absent {
+    background-color: #dc3545;
+}
+
+/* Leyenda */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+/* Resumen */
+.attendance-summary {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+.summary-item {
+    font-size: 0.9rem;
+}
+
+/* Filtros */
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+.form-control-sm {
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .attendance-table {
+        font-size: 0.8rem;
+    }
+    
+    .attendance-table th,
+    .attendance-table td {
+        padding: 8px 4px;
+    }
+    
+    .col-shifts {
+        min-width: 180px;
+    }
+}
+
+@media (max-width: 992px) {
+    .legend {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .attendance-table-container {
+        overflow-x: auto;
+    }
+    
+    .attendance-table {
+        min-width: 800px;
+    }
+    
+    .attendance-header {
+        padding: 15px;
+    }
+    
+    .attendance-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animaciones */
+.attendance-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.badge-info {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading spinner */
+.loading-overlay {
+    position: relative;
+}
+
+.loading-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.spinner-border-sm {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Botones */
+.btn-refresh {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-refresh:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+/* Botones de acciones superiores */
+.top-action-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.top-action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+/* Tooltips personalizados */
+.custom-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.custom-tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-size: 0.8rem;
+}
+
+/* Mejoras visuales adicionales */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.text-muted {
+    font-style: italic;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Zona de eliminación en cada fila */
+.delete-drop {
+    border: 2px dashed #dc3545;
+    color: #dc3545;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-drop.drag-over {
+    background-color: #f5c6cb;
+}
+
+/* Bordes visibles en tablas */
+.table-bordered > :not(caption) > * > * {
+    border: 1px solid #dee2e6;
+}

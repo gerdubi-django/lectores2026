@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link media="all" rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script type="text/javascript" src="../highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="../highcharts/accessibility.js"></script>
+    <script type="text/javascript" src="../js/functions.js"></script>
+    <script type="text/javascript" src="../js/scenario.js"></script>
+  </head>
+  <body class="no-margin stats-body">
+    <div class="path"><div class='breadcrumbs'>
+      <a class="breadcrumb" id="3546400d-2791-44d5-be5f-f66a0270a427" href="javascript:void(0);" tabindex="0" onclick="treeNav(&#39;3546400d-2791-44d5-be5f-f66a0270a427&#39;, null)">Databases</a>
+      <a> &gt; </a>
+      <a class="breadcrumb" id="e03bb1e5-b1e1-440d-9bef-a2b0afed5e1d" href="javascript:void(0);" tabindex="0" onclick="treeNav(&#39;e03bb1e5-b1e1-440d-9bef-a2b0afed5e1d&#39;, null)">CrossChex - copia</a>
+      <a> &gt; </a>
+      <span style="font-weight: bold; color: blue" id="860fc711-0fa6-4f25-ac5e-c70f2bbb812e">Tables</span>
+      </div>
+      <a tabindex='0' href='javascript:void(0);' role='button' aria-label='Minimize/maximize statistics' class='maximize-button' onclick='toggleAll()'>&#9974;</a>
+      <div class="clearfix"></div>
+    </div>
+    
+<div class='tab-navigation' >
+    <a id='stat-buttons-tab-0' class='stat-buttons-tab tab-selected' href='javascript:void(0);' tabindex='0' aria-label='Overview' role='tab' index='0' onclick='tabClicked(this)'>
+    
+        <div style='position:relative;top:4px;font-family:Arial;font-size:9.75pt;color:black;'>
+    Overview
+    
+        </div>
+    </a>
+    
+    <a id='stat-buttons-tab-2' class='stat-buttons-tab' href='javascript:void(0);' tabindex='0' aria-label='Details' role='tab' index='2' onclick='tabClicked(this)'>
+        <div style='position:relative;top:4px;font-family:Arial;font-size:9.75pt;color:black;'>Details</div>
+    </a>
+</div>
+
+    <div id="content-stat-buttons-tab-0" class="content-tab full-width">
+      <div class="scrollable-tab">
+        <div class="chart">
+          <div id="pieContainer">
+            <div id="pieConversion" class="half-width"></div>
+            <div id="pieEffort" class="half-width"></div>
+            <script>
+initPieChart(
+    [
+        {name: 'Automatic', y: 72, color: 'forestgreen'},
+        {name: 'Warning', y: 19, color: 'gold'},
+        {name: 'Error', y: 0, color: 'crimson'},
+    ],
+    'Object',
+    'Object Conversion<br>91 Object(s)',
+    'Breakdown of objects categorized by severity of conversion issues',
+    'pieConversion');
+initPieChart(
+    [
+        {name: 'Warning', y: 9,0, color: 'steelblue'},
+        {name: 'Error', y: 0, color: 'navy'},
+    ],
+    'Hour',
+    'Manual Conversion Time<br>9,0 Hour(s)',
+    'Distribution of estimated manual effort in hours',
+    'pieEffort');</script>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="chart-title">Objects Breakdown</div>
+        <div class="chart-subtitle">Child objects with conversion issues</div>
+        <div class="chart-legend-container">
+          <div class="sample info"></div>
+          Automatic
+          <div class="sample warning"></div>
+          Warning
+          <div class="sample error"></div>
+          Error
+          <br/>
+          <div class="sample warning-hours"></div>
+          Warning hours
+          <div class="sample error-hours"></div>
+          Error hours</div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;413e5b8e-4811-4270-b898-67a75cd17dee&#39;, null);">ACCESSGROUP</div>
+          <div id="barChart0" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;69b7677d-447f-4791-b854-54158596dbc5&#39;, null);">ACCESSTIME</div>
+          <div id="barChart1" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;d9853d84-5c67-4358-8e3a-24c7d044a9dc&#39;, null);">BASEPARA</div>
+          <div id="barChart2" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;c854db38-5807-4ef1-9cf9-87e529d360f0&#39;, null);">CHECKINOUT</div>
+          <div id="barChart3" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;738f7499-ff89-47ef-b3de-0243c417102d&#39;, null);">OPCLIENT</div>
+          <div id="barChart12" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;c90a470a-49e7-4917-9574-ac41a942d8dc&#39;, null);">OPDEPT</div>
+          <div id="barChart13" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;cc6d5def-1283-4ead-bd94-39d4b002ba8c&#39;, null);">SCHEDULE</div>
+          <div id="barChart18" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;7e5d1609-d196-404c-9ec4-6afac8b91a02&#39;, null);">SCHTIME</div>
+          <div id="barChart19" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;b9c6e4c6-cb6b-48bf-bd39-5c3fe07cae01&#39;, null);">STATITEMS</div>
+          <div id="barChart20" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;f3b37b9e-c4b9-427b-8351-085c9ec73d92&#39;, null);">STATUS</div>
+          <div id="barChart21" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;f7afea55-040a-43e5-b047-5630179d9355&#39;, null);">TIMETABLE</div>
+          <div id="barChart22" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;6e405e43-e0cf-4ae4-b3bc-b44c0575e555&#39;, null);">USERFINGER</div>
+          <div id="barChart24" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;1c33de71-fb22-4b0d-bf79-d837a1f95f1d&#39;, null);">USERLEAVE</div>
+          <div id="barChart26" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;891625b4-7b65-4d9c-818f-3ffce1bbc9b9&#39;, null);">USERSHIFT</div>
+          <div id="barChart28" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;6172f5c8-d93f-4d0b-904a-039148488485&#39;, null);">USERTEMPSHIFT</div>
+          <div id="barChart29" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;15a1a0cf-1242-4650-b33a-b08640e6df2d&#39;, null);">WORKCODE</div>
+          <div id="barChart30" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;301c27c6-d6b7-49ca-8174-5074914ccdbd&#39;, null);">Z_MEMRECORD</div>
+          <div id="barChart32" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="bar-chart-container">
+          <div class="bar-chart-label clickable" onclick="treeNav(&#39;9cdd1af1-d760-4606-85e0-0222e4bee435&#39;, null);">Z_MEMUCLASS</div>
+          <div id="barChart33" class="bar-chart"></div>
+          <div class="clearfix"></div>
+        </div>
+        <script>barCharts.push({'barChartName':barChart0,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0,5});barCharts.push({'barChartName':barChart1,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0,5});barCharts.push({'barChartName':barChart2,'totalElements':2,'automaticElements':0,'errorElements':0,'warningElements':2,'infoElements':0,'errorHours':0,'warningHours':0,5});barCharts.push({'barChartName':barChart3,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});barCharts.push({'barChartName':barChart12,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':1,0});barCharts.push({'barChartName':barChart13,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':1,0});barCharts.push({'barChartName':barChart18,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});barCharts.push({'barChartName':barChart19,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':1,5});barCharts.push({'barChartName':barChart20,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});barCharts.push({'barChartName':barChart21,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0,5});barCharts.push({'barChartName':barChart22,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});barCharts.push({'barChartName':barChart24,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0,5});barCharts.push({'barChartName':barChart26,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});barCharts.push({'barChartName':barChart28,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':1,5});barCharts.push({'barChartName':barChart29,'totalElements':2,'automaticElements':1,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':1,0});barCharts.push({'barChartName':barChart30,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0,5});barCharts.push({'barChartName':barChart32,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});barCharts.push({'barChartName':barChart33,'totalElements':3,'automaticElements':2,'errorElements':0,'warningElements':1,'infoElements':0,'errorHours':0,'warningHours':0});</script>
+      </div>
+    </div>
+    <div id="content-stat-buttons-tab-2" class="scrollable-tab content-tab full-width tab-content-hidden">
+      <div class="raw-data">
+        <table class="stats-table">
+          <caption>
+            <b>Objects Conversion</b>
+          </caption>
+          <colgroup>
+            <col style="width: 139px"></col>
+            <col style="width: 51px"></col>
+            <col style="width: 79px"></col>
+            <col style="width: 79px"></col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>Object type</th>
+              <th>Total</th>
+              <th>Converted</th>
+              <th>Objects with Issues</th>
+              <th>Error Objects</th>
+              <th>Warning Objects</th>
+              <th>Info Objects</th>
+              <th>Error Hours</th>
+              <th>Warning Hours</th>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr height="35">
+              <td class="align-left">
+                <span>table</span>
+              </td>
+              <td>
+                <span>34</span>
+              </td>
+              <td>
+                <span>76,47 %
+                  <img src="../img/error.gif"></img>
+                </span>
+              </td>
+              <td>
+                <span>8</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>8</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+            </tr>
+            <tr height="35">
+              <td class="align-left">
+                <span>primary-key</span>
+              </td>
+              <td>
+                <span>34</span>
+              </td>
+              <td>
+                <span>67,65 %
+                  <img src="../img/error.gif"></img>
+                </span>
+              </td>
+              <td>
+                <span>11</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>11</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>9.0</span>
+              </td>
+            </tr>
+            <tr height="35">
+              <td class="align-left">
+                <span>unique-constraint</span>
+              </td>
+              <td>
+                <span>17</span>
+              </td>
+              <td>
+                <span>100 %</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+            </tr>
+            <tr height="35">
+              <td class="align-left">
+                <span>index</span>
+              </td>
+              <td>
+                <span>6</span>
+              </td>
+              <td>
+                <span>100 %</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="raw-data">
+        <table class="stats-table">
+          <caption>
+            <div>
+              <b>Syntax Conversion</b>
+            </div>
+          </caption>
+          <colgroup>
+            <col style="width: 139px"></col>
+            <col style="width: 51px"></col>
+            <col style="width: 79px"></col>
+            <col style="width: 79px"></col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>Syntax element</th>
+              <th>Total</th>
+              <th>Converted</th>
+              <th>Syntax elements with Issues</th>
+              <th>Error elements</th>
+              <th>Warning elements</th>
+              <th>Info elements</th>
+              <th>Error Hours</th>
+              <th>Warning Hours</th>
+            </tr>
+            <tr>
+              <td class="align-left">
+                <span>&lt;ALL&gt;</span>
+              </td>
+              <td>
+                <span>407</span>
+              </td>
+              <td>
+                <span>90,91 %
+                  <img src="../img/error.gif"></img>
+                </span>
+              </td>
+              <td>
+                <span>37</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>37</span>
+              </td>
+              <td>
+                <span>114</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>9.0</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="align-left">
+                <span>column</span>
+              </td>
+              <td>
+                <span>335</span>
+              </td>
+              <td>
+                <span>94,33 %
+                  <img src="../img/error.gif"></img>
+                </span>
+              </td>
+              <td>
+                <span>19</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>19</span>
+              </td>
+              <td>
+                <span>42</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="align-left">
+                <span>index</span>
+              </td>
+              <td>
+                <span>6</span>
+              </td>
+              <td>
+                <span>100 %</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>6</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="align-left">
+                <span>primary-key</span>
+              </td>
+              <td>
+                <span>34</span>
+              </td>
+              <td>
+                <span>47,06 %
+                  <img src="../img/error.gif"></img>
+                </span>
+              </td>
+              <td>
+                <span>18</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>18</span>
+              </td>
+              <td>
+                <span>34</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>9.0</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="align-left">
+                <span>unique-constraint</span>
+              </td>
+              <td>
+                <span>17</span>
+              </td>
+              <td>
+                <span>100 %</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>17</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+              <td>
+                <span>0</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
