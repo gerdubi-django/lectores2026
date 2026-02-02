@@ -380,6 +380,11 @@ const AttendanceControl = (() => {
                 dom.tableBody.appendChild(row);
                 updateShiftCell(row.querySelector('.col-shifts'), record.shifts);
                 setupRowActions(row);
+                const mobileActionRow = buildMobileActionRow(row);
+                if (mobileActionRow) {
+                    dom.tableBody.appendChild(mobileActionRow);
+                    attachSwipeHandlers(row, mobileActionRow);
+                }
             });
         });
 
@@ -590,6 +595,18 @@ const AttendanceControl = (() => {
         badge.textContent = time;
         cell.appendChild(badge);
         showToast(type === 'entry' ? 'Entrada agregada' : 'Salida agregada');
+        saveMarks(row);
+    };
+
+    const removeLastMark = (row, type) => {
+        const cell = row.querySelector(type === 'entry' ? '.entry-cell' : '.exit-cell');
+        if (!cell) return;
+        const badges = cell.querySelectorAll('.badge');
+        if (!badges.length) {
+            showToast('No hay marcas para eliminar', 'info');
+            return;
+        }
+        badges[badges.length - 1].remove();
         saveMarks(row);
     };
 
