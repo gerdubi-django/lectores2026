@@ -13,7 +13,8 @@ const AttendanceControl = (() => {
         currentRow: null,
         currentType: null,
         timeModal: null,
-        timeInput: null
+        timeInput: null,
+        configModal: null
     };
 
     // Cached DOM references for faster access.
@@ -28,6 +29,8 @@ const AttendanceControl = (() => {
         setupButtons();
         setupTooltips();
         setupTimePicker();
+        setupConfigPanel();
+        applyStoredTheme();
         loadAttendanceData();
         setInterval(() => {
             if (dom.autoRefresh && dom.autoRefresh.checked) {
@@ -48,11 +51,18 @@ const AttendanceControl = (() => {
         dom.exportBtn = byId('export-btn');
         dom.incompleteBtn = byId('incomplete-btn');
         dom.cleanBtn = byId('clean-btn');
+        dom.configBtn = byId('config-btn');
         dom.alertContainer = byId('alert-container');
         dom.summaryContainer = byId('summary-container');
         dom.tableBody = byId('attendance-body');
         dom.mainTableContainer = document.querySelector('.attendance-table-container');
         dom.incompleteContainer = byId('incomplete-container');
+        dom.dbIp = byId('db-ip');
+        dom.dbPort = byId('db-port');
+        dom.dbName = byId('db-name');
+        dom.dbUser = byId('db-user');
+        dom.dbPassword = byId('db-password');
+        dom.dbSaveBtn = byId('db-save-btn');
     };
 
     const setupFilters = () => {
@@ -113,6 +123,79 @@ const AttendanceControl = (() => {
                 }
             });
         }
+    };
+
+    const setupConfigPanel = () => {
+        const modalEl = byId('configModal');
+        if (modalEl) {
+            state.configModal = new bootstrap.Modal(modalEl);
+        }
+
+        if (dom.configBtn && state.configModal) {
+            dom.configBtn.addEventListener('click', () => {
+                loadDbConfig();
+                state.configModal.show();
+            });
+        }
+
+        const themeInputs = document.querySelectorAll('input[name="theme-option"]');
+        themeInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                if (input.checked) setTheme(input.value);
+            });
+        });
+
+        if (dom.dbSaveBtn) {
+            dom.dbSaveBtn.addEventListener('click', saveDbConfig);
+        }
+    };
+
+    const applyStoredTheme = () => {
+        const stored = sessionStorage.getItem('attendanceTheme') || 'light';
+        setTheme(stored);
+    };
+
+    const setTheme = (theme) => {
+        document.body.classList.toggle('theme-dark', theme === 'dark');
+        sessionStorage.setItem('attendanceTheme', theme);
+        const input = document.querySelector(`input[name="theme-option"][value="${theme}"]`);
+        if (input) input.checked = true;
+    };
+
+    const loadDbConfig = () => {
+        fetch('view_control.php?action=get_db_config')
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al cargar configuración');
+                if (dom.dbIp) dom.dbIp.value = result.data.ip || '';
+                if (dom.dbPort) dom.dbPort.value = result.data.port || '';
+                if (dom.dbName) dom.dbName.value = result.data.database || '';
+                if (dom.dbUser) dom.dbUser.value = result.data.username || '';
+                if (dom.dbPassword) dom.dbPassword.value = result.data.password || '';
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
+    };
+
+    const saveDbConfig = () => {
+        const payload = {
+            ip: dom.dbIp ? dom.dbIp.value.trim() : '',
+            port: dom.dbPort ? dom.dbPort.value.trim() : '',
+            database: dom.dbName ? dom.dbName.value.trim() : '',
+            username: dom.dbUser ? dom.dbUser.value.trim() : '',
+            password: dom.dbPassword ? dom.dbPassword.value : ''
+        };
+
+        fetch('view_control.php?action=save_db_config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al guardar');
+                showToast('Configuración guardada');
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
     };
 
     const loadAttendanceData = () => {
