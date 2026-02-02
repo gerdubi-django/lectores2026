@@ -34,6 +34,7 @@ const AttendanceControl = (() => {
                 refreshData();
             }
         }, 300000);
+        window.addEventListener('resize', () => updateHeaderColspans());
     };
 
     const cacheDom = () => {
@@ -117,7 +118,7 @@ const AttendanceControl = (() => {
     const loadAttendanceData = () => {
         if (!dom.tableBody) return;
 
-        dom.tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-primary me-2"></div> Cargando datos...</td></tr>';
+        dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center py-4"><div class="spinner-border text-primary me-2"></div> Cargando datos...</td></tr>`;
 
         const params = new URLSearchParams({
             action: 'get_attendance_data',
@@ -158,7 +159,7 @@ const AttendanceControl = (() => {
             })
             .catch(err => {
                 showToast(err.message || 'Error cargando asistencia', 'danger');
-                dom.tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${err.message}</td></tr>`;
+                dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center text-danger">${err.message}</td></tr>`;
             });
     };
 
@@ -180,6 +181,10 @@ const AttendanceControl = (() => {
     };
 
     const formatTime = (timeStr) => (timeStr ? timeStr.slice(0, 5) : '');
+
+    const isMobileTable = () => window.matchMedia('(max-width: 768px)').matches;
+
+    const getTableColumnCount = () => (isMobileTable() ? 3 : 6);
 
     const formatShifts = (shifts) => {
         if (!shifts.length) return 'Sin turno asignado';
@@ -317,7 +322,7 @@ const AttendanceControl = (() => {
         if (!dom.tableBody) return;
 
         if (!state.attendanceData.length) {
-            dom.tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No hay datos disponibles</td></tr>';
+            dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center">No hay datos disponibles</td></tr>`;
             return;
         }
 
@@ -335,7 +340,7 @@ const AttendanceControl = (() => {
 
             const headerRow = document.createElement('tr');
             const headerCell = document.createElement('td');
-            headerCell.colSpan = 6;
+            headerCell.colSpan = getTableColumnCount();
             headerCell.innerHTML = `<strong>${userName}</strong>`;
             headerCell.className = 'table-primary text-start';
             headerRow.dataset.user = `${userName} ${records[0].usercode}`;
@@ -379,6 +384,14 @@ const AttendanceControl = (() => {
         });
 
         if (dom.searchInput) filterTable(dom.searchInput.value); else applyFilters();
+        updateHeaderColspans();
+    };
+
+    const updateHeaderColspans = () => {
+        const columnCount = getTableColumnCount();
+        document.querySelectorAll('#attendance-body tr[data-header="1"] td').forEach(cell => {
+            cell.colSpan = columnCount;
+        });
     };
 
     const computeSummary = (data) => {
