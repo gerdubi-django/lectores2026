@@ -109,9 +109,7 @@ body {
 }
 
 .filters-section {
-    padding: 18px 20px;
-    margin-left: 0;
-    margin-right: 0;
+    padding: 18px;
 }
 
 .filters-section .form-label {
@@ -158,37 +156,6 @@ body {
     border-bottom: 1px solid var(--border-color);
     text-align: center !important;
     transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.mobile-action-row {
-    display: none;
-}
-
-.mobile-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    background: var(--surface-accent);
-    border-top: 1px solid var(--border-color);
-    padding: 0 16px;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transform: translateY(-4px);
-    transition: max-height 0.25s ease, opacity 0.25s ease, transform 0.25s ease, padding 0.25s ease;
-}
-
-.mobile-action-row.is-visible .mobile-actions {
-    max-height: 160px;
-    opacity: 1;
-    padding: 12px 16px;
-    transform: translateY(0);
-}
-
-.mobile-action-row td {
-    padding: 0;
-    border-top: none;
 }
 
 .row-normal {
@@ -262,7 +229,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 16px;
 }
 
 .status-indicator {
@@ -414,20 +380,27 @@ body {
         display: none;
     }
 
-    .mobile-action-row {
-        display: table-row;
-    }
-
-    .mobile-action-btn {
-        flex: 1 1 140px;
-    }
-
     .date-long {
         display: none;
     }
 
     .date-short {
         display: inline;
+    }
+}
+
+@media (max-width: 576px) {
+    .attendance-header {
+        padding: 20px;
+    }
+
+    .header-brand img {
+        height: 44px;
+    }
+
+    .top-action-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 

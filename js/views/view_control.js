@@ -182,13 +182,9 @@ const AttendanceControl = (() => {
 
     const formatTime = (timeStr) => (timeStr ? timeStr.slice(0, 5) : '');
 
-    function isMobileTable() {
-        return window.matchMedia('(max-width: 768px)').matches;
-    }
+    const isMobileTable = () => window.matchMedia('(max-width: 768px)').matches;
 
-    function getTableColumnCount() {
-        return isMobileTable() ? 3 : 6;
-    }
+    const getTableColumnCount = () => (isMobileTable() ? 3 : 6);
 
     const formatShifts = (shifts) => {
         if (!shifts.length) return 'Sin turno asignado';
@@ -394,6 +390,13 @@ const AttendanceControl = (() => {
 
         if (dom.searchInput) filterTable(dom.searchInput.value); else applyFilters();
         updateHeaderColspans();
+    };
+
+    const updateHeaderColspans = () => {
+        const columnCount = getTableColumnCount();
+        document.querySelectorAll('#attendance-body tr[data-header="1"] td').forEach(cell => {
+            cell.colSpan = columnCount;
+        });
     };
 
     function updateHeaderColspans() {
