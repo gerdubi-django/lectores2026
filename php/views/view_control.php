@@ -167,7 +167,7 @@ $departments = getDepartments();
 <div class="container-fluid">
     <div class="attendance-control">
     <div class="attendance-header d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center header-brand">
             <img src="/donbosco/assets/img/logo.png" alt="Logo Don Bosco"
                  style="height: 50px; margin-right: 12px;">
             <div>
@@ -175,7 +175,7 @@ $departments = getDepartments();
                 <p class="mb-0">Monitoreo de entrada y salida de personal</p>
             </div>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 header-actions">
             <button id="refresh-btn" class="btn btn-primary btn-sm top-action-btn">
                 <i class="fas fa-sync-alt"></i> Actualizar
             </button>
@@ -191,7 +191,7 @@ $departments = getDepartments();
         </div>
     </div>
 
-        <!-- Filtros -->
+        <!-- Filters -->
         <div class="filters-section mt-3 row g-3 align-items-end">
             <div class="col-md-2">
                 <label for="dept-filter" class="form-label">Departamento</label>
@@ -276,7 +276,7 @@ $departments = getDepartments();
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Details modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -292,7 +292,7 @@ $departments = getDepartments();
     </div>
 </div>
 
-<!-- Modal Días incompletos -->
+<!-- Incomplete days modal -->
 <div class="modal fade" id="incompleteModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -310,7 +310,7 @@ $departments = getDepartments();
     </div>
 </div>
 
-<!-- Modal selector de hora -->
+<!-- Time picker modal -->
 <div class="modal fade" id="timePickerModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

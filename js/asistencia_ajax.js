@@ -1,4 +1,4 @@
-// Funciones genéricas para guardar cambios de asistencia via AJAX
+// Generic helpers to persist attendance changes via AJAX.
 async function sendAttendance(action, payload) {
     try {
         const response = await fetch('../../php/asistencia_ajax.php', {
@@ -8,16 +8,16 @@ async function sendAttendance(action, payload) {
         });
         const text = await response.text();
         if (!response.ok || !text.trim()) {
-            // No mostrar ningún error visual si simplemente está vacío
-            return { success: true };  // lo tratamos como "ok"
+            // Avoid visual errors when the response body is empty.
+            return { success: true };
         }
         try {
             return JSON.parse(text);
         } catch {
-            return { success: true };  // lo tratamos como "ok"
+            return { success: true };
         }
     } catch {
-        return { success: true };  // también tratamos fallos de red como "ok"
+        return { success: true };
     }
 }
 
