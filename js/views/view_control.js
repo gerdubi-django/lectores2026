@@ -34,6 +34,7 @@ const AttendanceControl = (() => {
                 refreshData();
             }
         }, 300000);
+        window.addEventListener('resize', () => updateHeaderColspans());
     };
 
     const cacheDom = () => {
@@ -117,7 +118,7 @@ const AttendanceControl = (() => {
     const loadAttendanceData = () => {
         if (!dom.tableBody) return;
 
-        dom.tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-primary me-2"></div> Cargando datos...</td></tr>';
+        dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center py-4"><div class="spinner-border text-primary me-2"></div> Cargando datos...</td></tr>`;
 
         const params = new URLSearchParams({
             action: 'get_attendance_data',
@@ -158,7 +159,7 @@ const AttendanceControl = (() => {
             })
             .catch(err => {
                 showToast(err.message || 'Error cargando asistencia', 'danger');
-                dom.tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${err.message}</td></tr>`;
+                dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center text-danger">${err.message}</td></tr>`;
             });
     };
 
@@ -173,7 +174,17 @@ const AttendanceControl = (() => {
         return `${dayName} ${day}-${month}-${year}`;
     };
 
+    const formatDateShort = (dateStr) => {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('-');
+        return `${day}-${month}-${year}`;
+    };
+
     const formatTime = (timeStr) => (timeStr ? timeStr.slice(0, 5) : '');
+
+    const isMobileTable = () => window.matchMedia('(max-width: 768px)').matches;
+
+    const getTableColumnCount = () => (isMobileTable() ? 3 : 6);
 
     const formatShifts = (shifts) => {
         if (!shifts.length) return 'Sin turno asignado';
@@ -311,7 +322,7 @@ const AttendanceControl = (() => {
         if (!dom.tableBody) return;
 
         if (!state.attendanceData.length) {
-            dom.tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No hay datos disponibles</td></tr>';
+            dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center">No hay datos disponibles</td></tr>`;
             return;
         }
 
@@ -329,7 +340,7 @@ const AttendanceControl = (() => {
 
             const headerRow = document.createElement('tr');
             const headerCell = document.createElement('td');
-            headerCell.colSpan = 6;
+            headerCell.colSpan = getTableColumnCount();
             headerCell.innerHTML = `<strong>${userName}</strong>`;
             headerCell.className = 'table-primary text-start';
             headerRow.dataset.user = `${userName} ${records[0].usercode}`;
@@ -350,12 +361,15 @@ const AttendanceControl = (() => {
                 );
 
                 row.innerHTML = `
-                    <td class="text-nowrap align-middle">${formatDateDisplay(record.date)}</td>
+                    <td class="col-date-cell text-nowrap align-middle">
+                        <span class="date-long">${formatDateDisplay(record.date)}</span>
+                        <span class="date-short">${formatDateShort(record.date)}</span>
+                    </td>
                     <td class="col-shifts text-nowrap align-middle"></td>
                     <td class="entry-cell align-middle">${formatTimes(record.entries)}</td>
                     <td class="exit-cell align-middle">${formatTimes(record.exits)}</td>
-                    <td class="align-middle">${formatStatus(record.status)}</td>
-                    <td class="actions-cell text-nowrap align-middle">
+                    <td class="col-status align-middle">${formatStatus(record.status)}</td>
+                    <td class="actions-cell col-actions text-nowrap align-middle">
                         <button class="btn btn-sm btn-outline-success me-1 add-entry-btn">+ Entrada</button>
                         <button class="btn btn-sm btn-outline-danger me-1 add-exit-btn">+ Salida</button>
                         <span class="delete-drop ms-1" title="Arrastrar aquí para eliminar">
@@ -366,10 +380,80 @@ const AttendanceControl = (() => {
                 dom.tableBody.appendChild(row);
                 updateShiftCell(row.querySelector('.col-shifts'), record.shifts);
                 setupRowActions(row);
+                const mobileActionRow = buildMobileActionRow(row);
+                if (mobileActionRow) {
+                    dom.tableBody.appendChild(mobileActionRow);
+                    attachSwipeHandlers(row, mobileActionRow);
+                }
             });
         });
 
         if (dom.searchInput) filterTable(dom.searchInput.value); else applyFilters();
+        updateHeaderColspans();
+    };
+
+    const updateHeaderColspans = () => {
+        const columnCount = getTableColumnCount();
+        document.querySelectorAll('#attendance-body tr[data-header="1"] td').forEach(cell => {
+            cell.colSpan = columnCount;
+        });
+        document.querySelectorAll('#attendance-body tr.mobile-action-row td').forEach(cell => {
+            cell.colSpan = columnCount;
+        });
+    };
+
+    const buildMobileActionRow = (row) => {
+        if (!row) return null;
+        const actionRow = document.createElement('tr');
+        actionRow.className = 'mobile-action-row';
+        actionRow.dataset.userid = row.dataset.userid;
+        actionRow.dataset.date = row.dataset.date;
+        actionRow.innerHTML = `
+            <td colspan="${getTableColumnCount()}">
+                <div class="mobile-actions">
+                    <button class="btn btn-sm btn-outline-success mobile-action-btn" data-action="add-entry">+ Entrada</button>
+                    <button class="btn btn-sm btn-outline-danger mobile-action-btn" data-action="add-exit">+ Salida</button>
+                    <button class="btn btn-sm btn-outline-secondary mobile-action-btn" data-action="remove-entry">Quitar entrada</button>
+                    <button class="btn btn-sm btn-outline-secondary mobile-action-btn" data-action="remove-exit">Quitar salida</button>
+                </div>
+            </td>
+        `;
+        actionRow.querySelectorAll('.mobile-action-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const action = button.dataset.action;
+                if (action === 'add-entry') openTimePicker(row, 'entry');
+                if (action === 'add-exit') openTimePicker(row, 'exit');
+                if (action === 'remove-entry') removeLastMark(row, 'entry');
+                if (action === 'remove-exit') removeLastMark(row, 'exit');
+            });
+        });
+        return actionRow;
+    };
+
+    const attachSwipeHandlers = (row, actionRow) => {
+        let startX = 0;
+        let endX = 0;
+        const threshold = 50;
+        row.addEventListener('touchstart', (event) => {
+            startX = event.touches[0].clientX;
+        }, { passive: true });
+        row.addEventListener('touchend', (event) => {
+            endX = event.changedTouches[0].clientX;
+            const deltaX = endX - startX;
+            if (deltaX < -threshold) showMobileActions(actionRow);
+            if (deltaX > threshold) hideMobileActions(actionRow);
+        });
+        row.addEventListener('click', () => hideMobileActions(actionRow));
+    };
+
+    const showMobileActions = (actionRow) => {
+        if (!actionRow) return;
+        actionRow.classList.add('is-visible');
+    };
+
+    const hideMobileActions = (actionRow) => {
+        if (!actionRow) return;
+        actionRow.classList.remove('is-visible');
     };
 
     const computeSummary = (data) => {
@@ -568,6 +652,18 @@ const AttendanceControl = (() => {
         badge.textContent = time;
         cell.appendChild(badge);
         showToast(type === 'entry' ? 'Entrada agregada' : 'Salida agregada');
+        saveMarks(row);
+    };
+
+    const removeLastMark = (row, type) => {
+        const cell = row.querySelector(type === 'entry' ? '.entry-cell' : '.exit-cell');
+        if (!cell) return;
+        const badges = cell.querySelectorAll('.badge');
+        if (!badges.length) {
+            showToast('No hay marcas para eliminar', 'info');
+            return;
+        }
+        badges[badges.length - 1].remove();
         saveMarks(row);
     };
 
