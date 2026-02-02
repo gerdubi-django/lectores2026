@@ -28,6 +28,9 @@ if (isset($_GET['action'])) {
         case 'save_db_config':
             handleSaveDbConfig();
             break;
+        case 'get_department_users':
+            handleGetDepartmentUsers();
+            break;
         default:
             echo json_encode(['success' => false, 'message' => 'Acción no válida']);
     }
@@ -228,6 +231,16 @@ function handleSaveDbConfig() {
     }
 }
 
+function handleGetDepartmentUsers() {
+    try {
+        $deptId = isset($_GET['dept_id']) ? intval($_GET['dept_id']) : 0;
+        $users = getUsersByDepartment($deptId);
+        echo json_encode(['success' => true, 'data' => $users]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
 function extractConfigValue($content, $key) {
     // Parse the configuration value from connect.php.
     if (preg_match('/\\$' . preg_quote($key, '/') . '\\s*=\\s*"([^"]*)"/', $content, $matches)) {
@@ -291,6 +304,14 @@ $departments = getDepartments();
             <button id="config-btn" class="btn btn-primary btn-sm top-action-btn">
                 <i class="fas fa-gear"></i> Configuración
             </button>
+            <div class="d-flex flex-column gap-2 w-100 manual-mark-actions d-md-none">
+                <button id="manual-entry-btn" class="btn btn-outline-success btn-sm top-action-btn">
+                    <i class="fas fa-door-open"></i> Entrada manual
+                </button>
+                <button id="manual-exit-btn" class="btn btn-outline-danger btn-sm top-action-btn">
+                    <i class="fas fa-door-closed"></i> Salida manual
+                </button>
+            </div>
         </div>
     </div>
 
@@ -429,6 +450,51 @@ $departments = getDepartments();
                 <button type="button" id="time-picker-save" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manual mark modal -->
+<div class="modal fade" id="manualMarkModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manual-mark-title">Entrada manual</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="manual-mark-form">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="manual-dept" class="form-label">Departamento</label>
+                        <select id="manual-dept" class="form-select form-select-sm" required>
+                            <?php foreach ($departments as $dept): ?>
+                                <option value="<?= $dept['Deptid'] ?>">
+                                    <?= htmlspecialchars($dept['DeptName']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                            <option value="0">Todos</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manual-user" class="form-label">Persona</label>
+                        <select id="manual-user" class="form-select form-select-sm" required>
+                            <option value="">Seleccione una persona</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manual-date" class="form-label">Fecha</label>
+                        <input type="date" id="manual-date" class="form-control form-control-sm" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manual-time" class="form-label" id="manual-time-label">Hora de entrada</label>
+                        <input type="time" id="manual-time" class="form-control form-control-sm" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="manual-mark-submit">Guardar entrada</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

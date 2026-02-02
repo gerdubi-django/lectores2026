@@ -14,7 +14,9 @@ const AttendanceControl = (() => {
         currentType: null,
         timeModal: null,
         timeInput: null,
-        configModal: null
+        configModal: null,
+        manualMarkModal: null,
+        manualType: 'entry'
     };
 
     // Cached DOM references for faster access.
@@ -30,6 +32,7 @@ const AttendanceControl = (() => {
         setupTooltips();
         setupTimePicker();
         setupConfigPanel();
+        setupManualMarks();
         applyStoredTheme();
         loadAttendanceData();
         setInterval(() => {
@@ -52,6 +55,16 @@ const AttendanceControl = (() => {
         dom.incompleteBtn = byId('incomplete-btn');
         dom.cleanBtn = byId('clean-btn');
         dom.configBtn = byId('config-btn');
+        dom.manualEntryBtn = byId('manual-entry-btn');
+        dom.manualExitBtn = byId('manual-exit-btn');
+        dom.manualMarkForm = byId('manual-mark-form');
+        dom.manualDept = byId('manual-dept');
+        dom.manualUser = byId('manual-user');
+        dom.manualDate = byId('manual-date');
+        dom.manualTime = byId('manual-time');
+        dom.manualTitle = byId('manual-mark-title');
+        dom.manualTimeLabel = byId('manual-time-label');
+        dom.manualSubmit = byId('manual-mark-submit');
         dom.alertContainer = byId('alert-container');
         dom.summaryContainer = byId('summary-container');
         dom.tableBody = byId('attendance-body');
@@ -150,6 +163,29 @@ const AttendanceControl = (() => {
         }
     };
 
+    const setupManualMarks = () => {
+        const modalEl = byId('manualMarkModal');
+        if (modalEl) {
+            state.manualMarkModal = new bootstrap.Modal(modalEl);
+        }
+
+        if (dom.manualEntryBtn) {
+            dom.manualEntryBtn.addEventListener('click', () => openManualMarkModal('entry'));
+        }
+
+        if (dom.manualExitBtn) {
+            dom.manualExitBtn.addEventListener('click', () => openManualMarkModal('exit'));
+        }
+
+        if (dom.manualDept) {
+            dom.manualDept.addEventListener('change', () => loadManualUsers(dom.manualDept.value));
+        }
+
+        if (dom.manualMarkForm) {
+            dom.manualMarkForm.addEventListener('submit', handleManualSubmit);
+        }
+    };
+
     const applyStoredTheme = () => {
         const stored = sessionStorage.getItem('attendanceTheme') || 'light';
         setTheme(stored);
@@ -244,6 +280,100 @@ const AttendanceControl = (() => {
                 showToast(err.message || 'Error cargando asistencia', 'danger');
                 dom.tableBody.innerHTML = `<tr><td colspan="${getTableColumnCount()}" class="text-center text-danger">${err.message}</td></tr>`;
             });
+    };
+
+    const openManualMarkModal = (type) => {
+        state.manualType = type;
+        if (dom.manualTitle) {
+            dom.manualTitle.textContent = type === 'entry' ? 'Entrada manual' : 'Salida manual';
+        }
+        if (dom.manualTimeLabel) {
+            dom.manualTimeLabel.textContent = type === 'entry' ? 'Hora de entrada' : 'Hora de salida';
+        }
+        if (dom.manualSubmit) {
+            dom.manualSubmit.textContent = type === 'entry' ? 'Guardar entrada' : 'Guardar salida';
+        }
+        setManualDefaults();
+        if (state.manualMarkModal) state.manualMarkModal.show();
+    };
+
+    const setManualDefaults = () => {
+        const defaultDept = dom.deptFilter ? dom.deptFilter.value : '0';
+        if (dom.manualDept) {
+            dom.manualDept.value = defaultDept;
+        }
+        if (dom.manualDate) {
+            const defaultDate = dom.dateFrom && dom.dateFrom.value ? dom.dateFrom.value : formatDateForInput(new Date());
+            dom.manualDate.value = defaultDate;
+        }
+        if (dom.manualTime) {
+            dom.manualTime.value = '';
+        }
+        loadManualUsers(defaultDept);
+    };
+
+    const loadManualUsers = (deptId) => {
+        if (!dom.manualUser) return;
+        dom.manualUser.innerHTML = '<option value="">Cargando...</option>';
+        const params = new URLSearchParams({ action: 'get_department_users', dept_id: deptId });
+        fetch(`view_control.php?${params.toString()}`)
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al cargar usuarios');
+                dom.manualUser.innerHTML = '<option value="">Seleccione una persona</option>';
+                result.data.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.userid;
+                    option.textContent = `${user.Name} (${user.UserCode})`;
+                    option.dataset.deptId = user.Deptid;
+                    dom.manualUser.appendChild(option);
+                });
+            })
+            .catch(err => {
+                dom.manualUser.innerHTML = '<option value="">Sin resultados</option>';
+                showToast(err.message || 'Error', 'danger');
+            });
+    };
+
+    const handleManualSubmit = (event) => {
+        event.preventDefault();
+        if (!dom.manualUser || !dom.manualDate || !dom.manualTime || !dom.manualDept) return;
+        const userId = dom.manualUser.value;
+        const date = dom.manualDate.value;
+        const time = dom.manualTime.value;
+        const deptId = dom.manualDept.value;
+        if (!userId || !date || !time) {
+            showToast('Completa todos los campos', 'danger');
+            return;
+        }
+
+        sendAttendance('add_mark', {
+            user_id: userId,
+            date,
+            time,
+            type: state.manualType
+        })
+            .then(resp => {
+                if (!resp.success) throw new Error(resp.message || 'Error al guardar');
+                showToast(state.manualType === 'entry' ? 'Entrada guardada' : 'Salida guardada');
+                if (state.manualMarkModal) state.manualMarkModal.hide();
+                applyManualFilters(deptId, date, dom.manualUser.selectedOptions[0]?.textContent || '');
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
+    };
+
+    const applyManualFilters = (deptId, date, userLabel) => {
+        if (dom.deptFilter) dom.deptFilter.value = deptId;
+        if (dom.dateFrom) dom.dateFrom.value = date;
+        if (dom.dateTo) dom.dateTo.value = date;
+        if (dom.searchInput) {
+            dom.searchInput.value = userLabel;
+            filterTable(userLabel);
+        }
+        if (state.alertsVisible) {
+            showAlertDetails();
+        }
+        loadAttendanceData();
     };
 
     const formatDateForInput = (date) => date.toISOString().split('T')[0];
