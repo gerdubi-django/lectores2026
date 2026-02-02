@@ -35,6 +35,7 @@ function convertRecordSetUtf8($rows) {
 // ==== Consultas de base de datos ====
 
 function getUsersByDepartment($deptId) {
+    if ($deptId === 0) return getAllUsers();
     if (!$deptId) return [];
     try {
         $pdo = getConnection();
@@ -50,6 +51,21 @@ function getUsersByDepartment($deptId) {
         return convertRecordSetUtf8($rows);
     } catch (Exception $e) {
         return logDbError('getUsersByDepartment', $e);
+    }
+}
+
+function getAllUsers() {
+    try {
+        $pdo = getConnection();
+        $sql = "SELECT u.userid, u.Name, u.UserCode, u.Deptid, d.DeptName
+                FROM Userinfo u
+                LEFT JOIN Dept d ON u.Deptid = d.Deptid
+                ORDER BY u.Name";
+        $stmt = $pdo->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return convertRecordSetUtf8($rows);
+    } catch (Exception $e) {
+        return logDbError('getAllUsers', $e);
     }
 }
 
@@ -110,6 +126,31 @@ function getDepartmentShifts($deptId, $startDate, $endDate) {
     }
 }
 
+function getAllShifts($startDate, $endDate) {
+    if (!$startDate || !$endDate) return [];
+    try {
+        $pdo = getConnection();
+        $sql = "SELECT us.userid, us.Schid, us.BeginDate, us.EndDate,
+                       s.Schname, st.BeginDay, st.Timeid,
+                       tt.Timename, tt.Intime, tt.Outtime
+                FROM ((UserShift us
+                LEFT JOIN Schedule s ON us.Schid = s.Schid)
+                LEFT JOIN SchTime st ON st.Schid = s.Schid)
+                LEFT JOIN TimeTable tt ON st.Timeid = tt.Timeid
+                WHERE us.BeginDate <= :endDate
+                AND us.EndDate >= :startDate
+                ORDER BY us.userid, st.BeginDay, tt.Intime";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':startDate', $startDate);
+        $stmt->bindValue(':endDate', $endDate);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return convertRecordSetUtf8($rows);
+    } catch (Exception $e) {
+        return logDbError('getAllShifts', $e);
+    }
+}
+
 function getUserAttendance($userId, $startDate, $endDate) {
     if (!$userId || !$startDate || !$endDate) return [];
     try {
@@ -153,6 +194,27 @@ function getDepartmentAttendance($deptId, $startDate, $endDate) {
         return convertRecordSetUtf8($rows);
     } catch (Exception $e) {
         return logDbError('getDepartmentAttendance', $e);
+    }
+}
+
+function getAllAttendance($startDate, $endDate) {
+    if (!$startDate || !$endDate) return [];
+    try {
+        $pdo = getConnection();
+        $sql = "SELECT userid, CheckTime, CheckType, Sensorid
+                FROM Checkinout
+                WHERE CheckTime >= :startDate
+                AND CheckTime < :endDateNext
+                ORDER BY userid, CheckTime";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':startDate', $startDate);
+        $endDateNext = date('Y-m-d', strtotime($endDate . ' +1 day'));
+        $stmt->bindValue(':endDateNext', $endDateNext);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return convertRecordSetUtf8($rows);
+    } catch (Exception $e) {
+        return logDbError('getAllAttendance', $e);
     }
 }
 
@@ -209,6 +271,7 @@ function isCalculatedShift($shift) {
 
 function getAttendanceControlData($deptId = 4, $days = 7, $startDate = null, $endDate = null) {
     try {
+        $deptId = (int) $deptId;
         $startDate = $startDate ?: null;
         $endDate = $endDate ?: null;
         if ($startDate && !$endDate) $endDate = $startDate;
@@ -234,8 +297,12 @@ function getAttendanceControlData($deptId = 4, $days = 7, $startDate = null, $en
             }
         }
 
-        $deptShifts = getDepartmentShifts($deptId, $startDate, $endDate);
-        $deptAttendance = getDepartmentAttendance($deptId, $startDate, $endDate);
+        $deptShifts = $deptId === 0
+            ? getAllShifts($startDate, $endDate)
+            : getDepartmentShifts($deptId, $startDate, $endDate);
+        $deptAttendance = $deptId === 0
+            ? getAllAttendance($startDate, $endDate)
+            : getDepartmentAttendance($deptId, $startDate, $endDate);
 
         $shiftsByUser = [];
         foreach ($deptShifts as $s) {
@@ -421,4 +488,3 @@ function saveUserDayMarks($userId, $date, $entries, $exits) {
         throw $e;
     }
 }
-
