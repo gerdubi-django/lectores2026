@@ -27,6 +27,8 @@ try {
     if (!isAuthenticated()) {
         sendJson(['success' => false, 'message' => 'Authentication required']);
     }
+    $authUser = getAuthenticatedUser();
+    $manualSensorId = isAdminUser($authUser) ? 1 : 2;
     switch ($action) {
         case 'save_marks':
             $userId = $input['user_id'] ?? null;
@@ -34,7 +36,7 @@ try {
             $entries = $input['entries'] ?? [];
             $exits = $input['exits'] ?? [];
             if (!$userId || !$date) throw new Exception('Parámetros faltantes');
-            saveUserDayMarks($userId, $date, $entries, $exits);
+            saveUserDayMarks($userId, $date, $entries, $exits, $manualSensorId);
             sendJson(['success' => true]);
             break;
         case 'add_mark':
@@ -44,8 +46,8 @@ try {
             $type = $input['type'] ?? null; // 'entry' o 'exit'
             if (!$userId || !$date || !$time || $type === null) throw new Exception('Parámetros faltantes');
             $pdo = getConnection();
-            $stmt = $pdo->prepare('INSERT INTO Checkinout (userid, CheckTime, CheckType, Sensorid) VALUES (?, ?, ?, 1)');
-            $stmt->execute([$userId, "$date $time", $type === 'entry' ? 0 : 1]);
+            $stmt = $pdo->prepare('INSERT INTO Checkinout (userid, CheckTime, CheckType, Sensorid) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$userId, "$date $time", $type === 'entry' ? 0 : 1, $manualSensorId]);
             sendJson(['success' => true]);
             break;
         case 'delete_mark':

@@ -451,6 +451,11 @@ const AttendanceControl = (() => {
 
     const getTableColumnCount = () => (isMobileTable() ? 3 : 6);
 
+    const hasManualNonAdminMarks = (record) => {
+        const marks = [...(record.entries || []), ...(record.exits || [])];
+        return marks.some(mark => mark.manual_non_admin);
+    };
+
     const formatShifts = (shifts) => {
         if (!shifts.length) return 'Sin turno asignado';
         return shifts.map(shift => {
@@ -493,7 +498,12 @@ const AttendanceControl = (() => {
     const formatTimes = (times) => {
         if (!times.length) return '<span class="text-muted">-</span>';
         return times
-            .map(t => `<span class="badge bg-info">${formatTime(t.time)}</span>`)
+            .map(t => {
+                const isManualNonAdmin = Boolean(t.manual_non_admin);
+                const extraClass = isManualNonAdmin ? ' badge-manual-non-admin' : '';
+                const title = isManualNonAdmin ? 'title="Marca manual (no admin)"' : '';
+                return `<span class="badge bg-info${extraClass}" ${title}>${formatTime(t.time)}</span>`;
+            })
             .join(' ');
     };
 
@@ -624,6 +634,9 @@ const AttendanceControl = (() => {
                     record.status === 'warning' ? 'row-warning' :
                     'row-normal'
                 );
+                if (hasManualNonAdminMarks(record)) {
+                    row.classList.add('row-manual-non-admin');
+                }
 
                 row.innerHTML = `
                     <td class="col-date-cell text-nowrap align-middle">
@@ -921,11 +934,15 @@ const AttendanceControl = (() => {
         row.cells[4].innerHTML = formatStatus(data.status);
         row.dataset.status = data.status;
         row.classList.remove('row-normal', 'row-warning', 'row-absent');
+        row.classList.remove('row-manual-non-admin');
         row.classList.add(
             data.status === 'warning' ? 'row-warning' :
             data.status === 'absent' ? 'row-absent' :
             'row-normal'
         );
+        if (hasManualNonAdminMarks(data)) {
+            row.classList.add('row-manual-non-admin');
+        }
         setupRowActions(row);
         highlightRows();
     };

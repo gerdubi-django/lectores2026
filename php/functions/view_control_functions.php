@@ -255,9 +255,13 @@ function groupAttendanceByDate($attendance) {
         if (!isset($grouped[$date])) {
             $grouped[$date] = ['entrada' => [], 'salida' => []];
         }
+        $sensorId = isset($record['Sensorid']) ? (int) $record['Sensorid'] : null;
+        $isManualNonAdmin = $sensorId === 2;
         $grouped[$date][$type][] = [
             'time' => date('H:i:s', strtotime($record['CheckTime'])),
-            'full_time' => $record['CheckTime']
+            'full_time' => $record['CheckTime'],
+            'sensor_id' => $sensorId,
+            'manual_non_admin' => $isManualNonAdmin
         ];
     }
     return $grouped;
@@ -465,7 +469,7 @@ function getDepartments() {
     }
 }
 
-function saveUserDayMarks($userId, $date, $entries, $exits) {
+function saveUserDayMarks($userId, $date, $entries, $exits, $sensorId = 1) {
     if (!$userId || !$date) return false;
     $pdo = getConnection();
     $start = $date . ' 00:00:00';
@@ -474,12 +478,12 @@ function saveUserDayMarks($userId, $date, $entries, $exits) {
         $pdo->beginTransaction();
         $del = $pdo->prepare("DELETE FROM Checkinout WHERE userid = ? AND CheckTime BETWEEN ? AND ?");
         $del->execute([$userId, $start, $end]);
-        $ins = $pdo->prepare("INSERT INTO Checkinout (userid, CheckTime, CheckType, Sensorid) VALUES (?, ?, ?, 1)");
+        $ins = $pdo->prepare("INSERT INTO Checkinout (userid, CheckTime, CheckType, Sensorid) VALUES (?, ?, ?, ?)");
         foreach ($entries as $t) {
-            $ins->execute([$userId, "$date $t", 0]);
+            $ins->execute([$userId, "$date $t", 0, $sensorId]);
         }
         foreach ($exits as $t) {
-            $ins->execute([$userId, "$date $t", 1]);
+            $ins->execute([$userId, "$date $t", 1, $sensorId]);
         }
         $pdo->commit();
         return true;

@@ -179,7 +179,9 @@ function handleSaveMarks() {
         $exits = $input['exits'] ?? [];
         if (!$userId || !$date) throw new Exception('Parámetros faltantes');
 
-        saveUserDayMarks($userId, $date, $entries, $exits);
+        $authUser = getAuthenticatedUser();
+        $manualSensorId = isAdminUser($authUser) ? 1 : 2;
+        saveUserDayMarks($userId, $date, $entries, $exits, $manualSensorId);
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
@@ -531,6 +533,7 @@ $isAdmin = isAdminUser($authUser);
             <div class="legend-item"><span class="status-indicator status-normal"></span> Normal</div>
             <div class="legend-item" id="legend-warning"><span class="status-indicator status-warning"></span> Tardanza/Salida temprana (+15 min)</div>
             <div class="legend-item" id="legend-absent"><span class="status-indicator status-absent"></span> Ausente</div>
+            <div class="legend-item"><span class="status-indicator status-manual-non-admin"></span> Marca manual (no admin)</div>
         </div>
 
         <div class="attendance-table-container panel-surface mt-3">
