@@ -11,6 +11,7 @@
     --success: #16a34a;
     --warning: #f59e0b;
     --danger: #ef4444;
+    --manual-non-admin: #f97316;
     --shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
     --radius-lg: 20px;
     --radius-md: 14px;
@@ -35,6 +36,7 @@ body {
     --primary-dark: #6366f1;
     --primary-soft: rgba(129, 140, 248, 0.2);
     --shadow: 0 18px 38px rgba(2, 6, 23, 0.55);
+    --manual-non-admin: #fb923c;
     background: radial-gradient(circle at top, #0f172a 0%, #111827 55%, #0b1120 100%);
     color: var(--text-primary);
 }
@@ -234,6 +236,10 @@ body {
     border-left: 4px solid var(--danger);
 }
 
+.row-manual-non-admin {
+    box-shadow: inset 4px 0 0 var(--manual-non-admin);
+}
+
 .attendance-table tbody tr:hover td {
     background-color: rgba(79, 70, 229, 0.08);
     transform: translateY(-1px);
@@ -274,6 +280,11 @@ body {
     font-weight: 500;
 }
 
+.badge-manual-non-admin {
+    background: var(--manual-non-admin) !important;
+    color: #fff;
+}
+
 .badge-new {
     border: 2px solid var(--primary);
 }
@@ -303,6 +314,10 @@ body {
 
 .status-absent {
     background: var(--danger);
+}
+
+.status-manual-non-admin {
+    background: var(--manual-non-admin);
 }
 
 .legend {
