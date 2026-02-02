@@ -207,6 +207,14 @@ body {
     min-width: 120px;
 }
 
+.date-short {
+    display: none;
+}
+
+.date-long {
+    display: inline;
+}
+
 .badge.bg-info {
     background: #0ea5e9 !important;
     font-weight: 500;
@@ -262,7 +270,7 @@ body {
     flex-wrap: wrap;
     gap: 12px;
     justify-content: center;
-    margin: 12px 0 0;
+    margin: 0;
 }
 
 .summary-item {
@@ -353,16 +361,46 @@ body {
     }
 
     .attendance-table-container {
-        overflow-x: auto;
+        overflow-x: hidden;
     }
 
     .attendance-table {
-        min-width: 720px;
+        min-width: 100%;
+        table-layout: fixed;
     }
 
     .header-actions {
         width: 100%;
         justify-content: flex-start;
+    }
+
+    .col-shifts,
+    .col-status,
+    .col-actions {
+        display: none;
+    }
+
+    .date-long {
+        display: none;
+    }
+
+    .date-short {
+        display: inline;
+    }
+}
+
+@media (max-width: 576px) {
+    .attendance-header {
+        padding: 20px;
+    }
+
+    .header-brand img {
+        height: 44px;
+    }
+
+    .top-action-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 

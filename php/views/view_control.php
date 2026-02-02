@@ -202,6 +202,7 @@ $departments = getDepartments();
                             <?= htmlspecialchars($dept['DeptName']) ?>
                         </option>
                     <?php endforeach; ?>
+                    <option value="0">Todos</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -259,8 +260,8 @@ $departments = getDepartments();
                             <th class="col-shifts text-center text-nowrap align-middle w-auto">Turno</th>
                             <th class="col-times text-center text-nowrap align-middle">Entradas</th>
                             <th class="col-times text-center text-nowrap align-middle">Salidas</th>
-                            <th class="text-center text-nowrap align-middle">Estado</th>
-                            <th class="text-center text-nowrap align-middle">Acciones</th>
+                            <th class="col-status text-center text-nowrap align-middle">Estado</th>
+                            <th class="col-actions text-center text-nowrap align-middle">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="attendance-body">

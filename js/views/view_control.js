@@ -173,6 +173,12 @@ const AttendanceControl = (() => {
         return `${dayName} ${day}-${month}-${year}`;
     };
 
+    const formatDateShort = (dateStr) => {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('-');
+        return `${day}-${month}-${year}`;
+    };
+
     const formatTime = (timeStr) => (timeStr ? timeStr.slice(0, 5) : '');
 
     const formatShifts = (shifts) => {
@@ -350,12 +356,15 @@ const AttendanceControl = (() => {
                 );
 
                 row.innerHTML = `
-                    <td class="text-nowrap align-middle">${formatDateDisplay(record.date)}</td>
+                    <td class="col-date-cell text-nowrap align-middle">
+                        <span class="date-long">${formatDateDisplay(record.date)}</span>
+                        <span class="date-short">${formatDateShort(record.date)}</span>
+                    </td>
                     <td class="col-shifts text-nowrap align-middle"></td>
                     <td class="entry-cell align-middle">${formatTimes(record.entries)}</td>
                     <td class="exit-cell align-middle">${formatTimes(record.exits)}</td>
-                    <td class="align-middle">${formatStatus(record.status)}</td>
-                    <td class="actions-cell text-nowrap align-middle">
+                    <td class="col-status align-middle">${formatStatus(record.status)}</td>
+                    <td class="actions-cell col-actions text-nowrap align-middle">
                         <button class="btn btn-sm btn-outline-success me-1 add-entry-btn">+ Entrada</button>
                         <button class="btn btn-sm btn-outline-danger me-1 add-exit-btn">+ Salida</button>
                         <span class="delete-drop ms-1" title="Arrastrar aquí para eliminar">
