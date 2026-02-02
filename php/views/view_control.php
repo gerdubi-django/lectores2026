@@ -159,14 +159,15 @@ $departments = getDepartments();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Asistencia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="../../css/views/view_control.css" rel="stylesheet">
 </head>
-<body>
-<div class="container-fluid">
+<body class="attendance-page">
+<div class="container-fluid attendance-shell">
     <div class="attendance-control">
-    <div class="attendance-header d-flex justify-content-between align-items-center">
+    <div class="attendance-header panel-hero d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center header-brand">
             <img src="/donbosco/assets/img/logo.png" alt="Logo Don Bosco"
                  style="height: 50px; margin-right: 12px;">
@@ -192,7 +193,7 @@ $departments = getDepartments();
     </div>
 
         <!-- Filters -->
-        <div class="filters-section mt-3 row g-3 align-items-end">
+        <div class="filters-section panel-surface mt-3 row g-3 align-items-end">
             <div class="col-md-2">
                 <label for="dept-filter" class="form-label">Departamento</label>
                 <select id="dept-filter" class="form-select form-select-sm">
@@ -201,6 +202,7 @@ $departments = getDepartments();
                             <?= htmlspecialchars($dept['DeptName']) ?>
                         </option>
                     <?php endforeach; ?>
+                    <option value="0">Todos</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -236,15 +238,15 @@ $departments = getDepartments();
         </div>
 
         <div id="alert-container"></div>
-        <div id="summary-container" class="mt-3"></div>
+        <div id="summary-container" class="summary-container panel-surface mt-3"></div>
 
-        <div class="legend mt-3">
+        <div class="legend panel-surface mt-3">
             <div class="legend-item"><span class="status-indicator status-normal"></span> Normal</div>
             <div class="legend-item" id="legend-warning"><span class="status-indicator status-warning"></span> Tardanza/Salida temprana (+15 min)</div>
             <div class="legend-item" id="legend-absent"><span class="status-indicator status-absent"></span> Ausente</div>
         </div>
 
-        <div class="attendance-table-container mt-3">
+        <div class="attendance-table-container panel-surface mt-3">
             <div class="position-relative">
                 <div id="loading-overlay" class="d-none position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75" style="z-index: 1000;">
                     <div class="spinner-border text-primary" role="status">
@@ -258,8 +260,8 @@ $departments = getDepartments();
                             <th class="col-shifts text-center text-nowrap align-middle w-auto">Turno</th>
                             <th class="col-times text-center text-nowrap align-middle">Entradas</th>
                             <th class="col-times text-center text-nowrap align-middle">Salidas</th>
-                            <th class="text-center text-nowrap align-middle">Estado</th>
-                            <th class="text-center text-nowrap align-middle">Acciones</th>
+                            <th class="col-status text-center text-nowrap align-middle">Estado</th>
+                            <th class="col-actions text-center text-nowrap align-middle">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="attendance-body">
