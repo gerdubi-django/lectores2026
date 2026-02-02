@@ -397,63 +397,6 @@ const AttendanceControl = (() => {
         document.querySelectorAll('#attendance-body tr[data-header="1"] td').forEach(cell => {
             cell.colSpan = columnCount;
         });
-        document.querySelectorAll('#attendance-body tr.mobile-action-row td').forEach(cell => {
-            cell.colSpan = columnCount;
-        });
-    };
-
-    const buildMobileActionRow = (row) => {
-        if (!row) return null;
-        const actionRow = document.createElement('tr');
-        actionRow.className = 'mobile-action-row';
-        actionRow.dataset.userid = row.dataset.userid;
-        actionRow.dataset.date = row.dataset.date;
-        actionRow.innerHTML = `
-            <td colspan="${getTableColumnCount()}">
-                <div class="mobile-actions">
-                    <button class="btn btn-sm btn-outline-success mobile-action-btn" data-action="add-entry">+ Entrada</button>
-                    <button class="btn btn-sm btn-outline-danger mobile-action-btn" data-action="add-exit">+ Salida</button>
-                    <button class="btn btn-sm btn-outline-secondary mobile-action-btn" data-action="remove-entry">Quitar entrada</button>
-                    <button class="btn btn-sm btn-outline-secondary mobile-action-btn" data-action="remove-exit">Quitar salida</button>
-                </div>
-            </td>
-        `;
-        actionRow.querySelectorAll('.mobile-action-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const action = button.dataset.action;
-                if (action === 'add-entry') openTimePicker(row, 'entry');
-                if (action === 'add-exit') openTimePicker(row, 'exit');
-                if (action === 'remove-entry') removeLastMark(row, 'entry');
-                if (action === 'remove-exit') removeLastMark(row, 'exit');
-            });
-        });
-        return actionRow;
-    };
-
-    const attachSwipeHandlers = (row, actionRow) => {
-        let startX = 0;
-        let endX = 0;
-        const threshold = 50;
-        row.addEventListener('touchstart', (event) => {
-            startX = event.touches[0].clientX;
-        }, { passive: true });
-        row.addEventListener('touchend', (event) => {
-            endX = event.changedTouches[0].clientX;
-            const deltaX = endX - startX;
-            if (deltaX < -threshold) showMobileActions(actionRow);
-            if (deltaX > threshold) hideMobileActions(actionRow);
-        });
-        row.addEventListener('click', () => hideMobileActions(actionRow));
-    };
-
-    const showMobileActions = (actionRow) => {
-        if (!actionRow) return;
-        actionRow.classList.add('is-visible');
-    };
-
-    const hideMobileActions = (actionRow) => {
-        if (!actionRow) return;
-        actionRow.classList.remove('is-visible');
     };
 
     const computeSummary = (data) => {
