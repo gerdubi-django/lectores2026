@@ -188,6 +188,26 @@ body {
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-shell {
+    width: 100%;
+    max-width: 460px;
+    padding: 24px;
+}
+
+.login-card {
+    padding: 28px;
+}
+
+.login-logo {
+    height: 64px;
+}
+
 .theme-dark .attendance-table th {
     background: #0b1120;
 }

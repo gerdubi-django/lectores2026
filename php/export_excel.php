@@ -1,5 +1,13 @@
 <?php
 require_once __DIR__ . '/functions/view_control_functions.php';
+require_once __DIR__ . '/functions/auth.php';
+
+startAuthSession();
+
+if (!isAuthenticated()) {
+    header('Location: views/view_control.php');
+    exit;
+}
 
 // Include PhpSpreadsheet if available
 $vendorAutoload = __DIR__ . '/../vendor/autoload.php';

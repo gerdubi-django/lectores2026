@@ -1,6 +1,11 @@
 <?php
 require_once '../functions/view_control_functions.php';
 require_once '../functions/export_excel.php';
+require_once '../functions/auth.php';
+
+startAuthSession();
+
+$authUser = getAuthenticatedUser();
 
 // ==============================
 // MANEJO DE ACCIONES AJAX
@@ -10,6 +15,18 @@ if (isset($_GET['action'])) {
     header('Content-Type: application/json; charset=utf-8');
 
     switch ($_GET['action']) {
+        case 'login':
+            handleLogin();
+            break;
+        case 'logout':
+            handleLogout();
+            break;
+        default:
+            if (!isAuthenticated()) {
+                echo json_encode(['success' => false, 'message' => 'Authentication required']);
+                break;
+            }
+            switch ($_GET['action']) {
         case 'get_attendance_data':
             handleGetAttendanceData();
             break;
@@ -31,9 +48,20 @@ if (isset($_GET['action'])) {
         case 'get_department_users':
             handleGetDepartmentUsers();
             break;
+        case 'create_auth_user':
+            handleCreateAuthUser();
+            break;
         default:
             echo json_encode(['success' => false, 'message' => 'Acción no válida']);
+            }
     }
+    exit;
+}
+
+if (!isAuthenticated()) {
+    $loginError = isset($_GET['login_error']) ? 'Usuario o contraseña inválidos.' : '';
+    $logoutNotice = isset($_GET['logout']) ? 'Sesión cerrada correctamente.' : '';
+    renderLoginView($loginError, $logoutNotice);
     exit;
 }
 
@@ -261,8 +289,141 @@ function replaceConfigValue($content, $key, $value) {
     return $result;
 }
 
+function handleLogin() {
+    // Handle login via POST and set the session.
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['success' => false, 'message' => 'Método no permitido']);
+        return;
+    }
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+    if ($username === '' || $password === '') {
+        echo json_encode(['success' => false, 'message' => 'Credenciales incompletas']);
+        return;
+    }
+    $user = authenticateUser($username, $password);
+    if (!$user) {
+        echo json_encode(['success' => false, 'message' => 'Credenciales inválidas']);
+        return;
+    }
+    setAuthenticatedUser($user);
+    echo json_encode(['success' => true]);
+}
+
+function handleLogout() {
+    // Clear the authentication session.
+    clearAuthenticatedUser();
+    echo json_encode(['success' => true, 'redirect' => 'view_control.php?logout=1']);
+}
+
+function handleCreateAuthUser() {
+    // Create a new authentication user when the requester is admin.
+    $authUser = getAuthenticatedUser();
+    if (!$authUser || !isAdminUser($authUser)) {
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
+        return;
+    }
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input) {
+        echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+        return;
+    }
+    $username = trim($input['username'] ?? '');
+    $password = $input['password'] ?? '';
+    $role = trim($input['role'] ?? 'user');
+    if ($username === '' || $password === '') {
+        echo json_encode(['success' => false, 'message' => 'Completa todos los campos']);
+        return;
+    }
+    if (!in_array($role, ['admin', 'user'], true)) {
+        echo json_encode(['success' => false, 'message' => 'Rol inválido']);
+        return;
+    }
+    try {
+        $created = createAuthUser($username, $password, $role);
+        if (!$created) {
+            echo json_encode(['success' => false, 'message' => 'El usuario ya existe']);
+            return;
+        }
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function renderLoginView($errorMessage, $logoutNotice) {
+    // Render the login view when no session is active.
+    ?>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ingreso - Control de Asistencia</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+        <link href="../../css/views/view_control.css" rel="stylesheet">
+    </head>
+    <body class="attendance-page login-page">
+    <div class="login-shell">
+        <div class="login-card panel-surface">
+            <div class="login-header text-center mb-4">
+                <img src="/donbosco/assets/img/logo.png" alt="Logo Don Bosco" class="login-logo">
+                <h2 class="mt-3">Control de Asistencia</h2>
+                <p class="text-muted mb-0">Ingresa con tu usuario para continuar.</p>
+            </div>
+            <?php if ($logoutNotice): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($logoutNotice) ?></div>
+            <?php endif; ?>
+            <?php if ($errorMessage): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($errorMessage) ?></div>
+            <?php endif; ?>
+            <form id="login-form" class="login-form">
+                <div class="mb-3">
+                    <label for="login-username" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="login-username" name="username" required autocomplete="username">
+                </div>
+                <div class="mb-4">
+                    <label for="login-password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="login-password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-right-to-bracket me-1"></i> Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const loginForm = document.getElementById('login-form');
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const formData = new FormData(loginForm);
+                const response = await fetch('view_control.php?action=login', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = 'view_control.php';
+                } else {
+                    window.location.href = 'view_control.php?login_error=1';
+                }
+            });
+        }
+    </script>
+    </body>
+    </html>
+    <?php
+}
+
 
 $departments = getDepartments();
+$authUser = getAuthenticatedUser();
+$isAdmin = isAdminUser($authUser);
 ?>
 
 <!DOCTYPE html>
@@ -303,6 +464,9 @@ $departments = getDepartments();
             </button>
             <button id="config-btn" class="btn btn-primary btn-sm top-action-btn">
                 <i class="fas fa-gear"></i> Configuración
+            </button>
+            <button id="logout-btn" class="btn btn-outline-light btn-sm top-action-btn">
+                <i class="fas fa-right-from-bracket"></i> Cerrar sesión
             </button>
             <div class="d-flex flex-column gap-2 w-100 manual-mark-actions d-md-none">
                 <button id="manual-entry-btn" class="btn btn-outline-success btn-sm top-action-btn">
@@ -519,6 +683,13 @@ $departments = getDepartments();
                             Base de datos
                         </button>
                     </li>
+                    <?php if ($isAdmin): ?>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#users-tab" type="button" role="tab">
+                                Usuarios
+                            </button>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                 <div class="tab-content pt-3">
                     <div class="tab-pane fade show active" id="appearance-tab" role="tabpanel">
@@ -569,6 +740,42 @@ $departments = getDepartments();
                             <div class="text-muted small mt-2">Se actualiza el archivo connect.php al guardar.</div>
                         </div>
                     </div>
+                    <?php if ($isAdmin): ?>
+                        <div class="tab-pane fade" id="users-tab" role="tabpanel">
+                            <div class="config-card">
+                                <h6 class="mb-3">Registrar nuevo usuario</h6>
+                                <form id="register-form">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="register-username" class="form-label">Usuario</label>
+                                            <input type="text" class="form-control form-control-sm" id="register-username" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="register-role" class="form-label">Rol</label>
+                                            <select class="form-select form-select-sm" id="register-role">
+                                                <option value="user">Usuario</option>
+                                                <option value="admin">Administrador</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="register-password" class="form-label">Contraseña</label>
+                                            <input type="password" class="form-control form-control-sm" id="register-password" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="register-confirm" class="form-label">Confirmar contraseña</label>
+                                            <input type="password" class="form-control form-control-sm" id="register-confirm" required>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-user-plus me-1"></i> Registrar
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="text-muted small mt-2">Solo los administradores pueden crear usuarios.</div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="modal-footer">

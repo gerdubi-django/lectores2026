@@ -3,6 +3,9 @@
 ob_start();
 
 require_once __DIR__ . '/functions/view_control_functions.php';
+require_once __DIR__ . '/functions/auth.php';
+
+startAuthSession();
 header('Content-Type: application/json');
 
 function sendJson($data) {
@@ -21,6 +24,9 @@ if (!$input) {
 $action = $input['action'] ?? '';
 
 try {
+    if (!isAuthenticated()) {
+        sendJson(['success' => false, 'message' => 'Authentication required']);
+    }
     switch ($action) {
         case 'save_marks':
             $userId = $input['user_id'] ?? null;

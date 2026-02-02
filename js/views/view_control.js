@@ -55,6 +55,7 @@ const AttendanceControl = (() => {
         dom.incompleteBtn = byId('incomplete-btn');
         dom.cleanBtn = byId('clean-btn');
         dom.configBtn = byId('config-btn');
+        dom.logoutBtn = byId('logout-btn');
         dom.manualEntryBtn = byId('manual-entry-btn');
         dom.manualExitBtn = byId('manual-exit-btn');
         dom.manualMarkForm = byId('manual-mark-form');
@@ -76,6 +77,11 @@ const AttendanceControl = (() => {
         dom.dbUser = byId('db-user');
         dom.dbPassword = byId('db-password');
         dom.dbSaveBtn = byId('db-save-btn');
+        dom.registerForm = byId('register-form');
+        dom.registerUsername = byId('register-username');
+        dom.registerPassword = byId('register-password');
+        dom.registerConfirm = byId('register-confirm');
+        dom.registerRole = byId('register-role');
     };
 
     const setupFilters = () => {
@@ -115,6 +121,7 @@ const AttendanceControl = (() => {
         if (dom.exportBtn) dom.exportBtn.addEventListener('click', exportAttendance);
         if (dom.incompleteBtn) dom.incompleteBtn.addEventListener('click', showIncompleteDays);
         if (dom.cleanBtn) dom.cleanBtn.addEventListener('click', cleanAttendanceData);
+        if (dom.logoutBtn) dom.logoutBtn.addEventListener('click', logoutUser);
     };
 
     const setupTooltips = () => {
@@ -160,6 +167,20 @@ const AttendanceControl = (() => {
 
         if (dom.dbSaveBtn) {
             dom.dbSaveBtn.addEventListener('click', saveDbConfig);
+        }
+
+        if (dom.registerForm) {
+            dom.registerForm.addEventListener('submit', handleRegisterSubmit);
+        }
+    };
+
+    const logoutUser = async () => {
+        const response = await fetch('view_control.php?action=logout');
+        const result = await response.json();
+        if (result.success && result.redirect) {
+            window.location.href = result.redirect;
+        } else {
+            showToast(result.message || 'Error al cerrar sesión', 'danger');
         }
     };
 
@@ -230,6 +251,37 @@ const AttendanceControl = (() => {
             .then(result => {
                 if (!result.success) throw new Error(result.message || 'Error al guardar');
                 showToast('Configuración guardada');
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
+    };
+
+    const handleRegisterSubmit = (event) => {
+        event.preventDefault();
+        if (!dom.registerUsername || !dom.registerPassword || !dom.registerConfirm || !dom.registerRole) return;
+        const username = dom.registerUsername.value.trim();
+        const password = dom.registerPassword.value;
+        const confirm = dom.registerConfirm.value;
+        const role = dom.registerRole.value;
+
+        if (!username || !password || !confirm) {
+            showToast('Completa todos los campos', 'danger');
+            return;
+        }
+        if (password !== confirm) {
+            showToast('Las contraseñas no coinciden', 'danger');
+            return;
+        }
+
+        fetch('view_control.php?action=create_auth_user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password, role })
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al registrar');
+                showToast('Usuario registrado');
+                dom.registerForm.reset();
             })
             .catch(err => showToast(err.message || 'Error', 'danger'));
     };
