@@ -6,6 +6,22 @@ require_once 'connect.php';
 
 // ==== Utilidades comunes ====
 
+if (!defined('NUPORA_DEPT_ID')) {
+    define('NUPORA_DEPT_ID', -10);
+}
+
+function isNuporaDepartment($deptId) {
+    return (int) $deptId === NUPORA_DEPT_ID;
+}
+
+function getDataSourceByDeptId($deptId) {
+    return isNuporaDepartment($deptId) ? 'nupora' : 'donbosco';
+}
+
+function getConnectionBySource($dataSource) {
+    return $dataSource === 'nupora' ? getNuporaConnection() : getConnection();
+}
+
 function logDbError($context, $e) {
     error_log("⚠️ [$context] " . $e->getMessage());
     return [];
@@ -35,6 +51,7 @@ function convertRecordSetUtf8($rows) {
 // ==== Consultas de base de datos ====
 
 function getUsersByDepartment($deptId) {
+    if (isNuporaDepartment($deptId)) return getNuporaUsers();
     if ($deptId === 0) return getAllUsers();
     if (!$deptId) return [];
     try {
@@ -54,6 +71,21 @@ function getUsersByDepartment($deptId) {
     }
 }
 
+function getNuporaUsers() {
+    try {
+        $pdo = getNuporaConnection();
+        $sql = "SELECT u.userid, u.Name, u.UserCode, u.Deptid, d.DeptName
+                FROM Userinfo u
+                LEFT JOIN Dept d ON u.Deptid = d.Deptid
+                ORDER BY u.Name";
+        $stmt = $pdo->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return convertRecordSetUtf8($rows);
+    } catch (Exception $e) {
+        return logDbError('getNuporaUsers', $e);
+    }
+}
+
 function getAllUsers() {
     try {
         $pdo = getConnection();
@@ -69,10 +101,10 @@ function getAllUsers() {
     }
 }
 
-function getUserShifts($userId, $startDate, $endDate) {
+function getUserShifts($userId, $startDate, $endDate, $dataSource = 'donbosco') {
     if (!$userId || !$startDate || !$endDate) return [];
     try {
-        $pdo = getConnection();
+        $pdo = getConnectionBySource($dataSource);
         $sql = "SELECT us.userid, us.Schid, us.BeginDate, us.EndDate,
                        s.Schname, st.BeginDay, st.Timeid,
                        tt.Timename, tt.Intime, tt.Outtime
@@ -99,6 +131,7 @@ function getUserShifts($userId, $startDate, $endDate) {
 
 function getDepartmentShifts($deptId, $startDate, $endDate) {
     if (!$deptId || !$startDate || !$endDate) return [];
+    if (isNuporaDepartment($deptId)) return getNuporaShifts($startDate, $endDate);
     try {
         $pdo = getConnection();
         $sql = "SELECT us.userid, us.Schid, us.BeginDate, us.EndDate,
@@ -123,6 +156,31 @@ function getDepartmentShifts($deptId, $startDate, $endDate) {
         return convertRecordSetUtf8($rows);
     } catch (Exception $e) {
         return logDbError('getDepartmentShifts', $e);
+    }
+}
+
+function getNuporaShifts($startDate, $endDate) {
+    if (!$startDate || !$endDate) return [];
+    try {
+        $pdo = getNuporaConnection();
+        $sql = "SELECT us.userid, us.Schid, us.BeginDate, us.EndDate,
+                       s.Schname, st.BeginDay, st.Timeid,
+                       tt.Timename, tt.Intime, tt.Outtime
+                FROM ((UserShift us
+                LEFT JOIN Schedule s ON us.Schid = s.Schid)
+                LEFT JOIN SchTime st ON st.Schid = s.Schid)
+                LEFT JOIN TimeTable tt ON st.Timeid = tt.Timeid
+                WHERE us.BeginDate <= :endDate
+                AND us.EndDate >= :startDate
+                ORDER BY us.userid, st.BeginDay, tt.Intime";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':startDate', $startDate);
+        $stmt->bindValue(':endDate', $endDate);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return convertRecordSetUtf8($rows);
+    } catch (Exception $e) {
+        return logDbError('getNuporaShifts', $e);
     }
 }
 
@@ -151,10 +209,10 @@ function getAllShifts($startDate, $endDate) {
     }
 }
 
-function getUserAttendance($userId, $startDate, $endDate) {
+function getUserAttendance($userId, $startDate, $endDate, $dataSource = 'donbosco') {
     if (!$userId || !$startDate || !$endDate) return [];
     try {
-        $pdo = getConnection();
+        $pdo = getConnectionBySource($dataSource);
         $sql = "SELECT userid, CheckTime, CheckType, Sensorid
                 FROM Checkinout
                 WHERE userid = :userId
@@ -176,6 +234,7 @@ function getUserAttendance($userId, $startDate, $endDate) {
 
 function getDepartmentAttendance($deptId, $startDate, $endDate) {
     if (!$deptId || !$startDate || !$endDate) return [];
+    if (isNuporaDepartment($deptId)) return getNuporaAttendance($startDate, $endDate);
     try {
         $pdo = getConnection();
         $sql = "SELECT c.userid, c.CheckTime, c.CheckType, c.Sensorid
@@ -194,6 +253,27 @@ function getDepartmentAttendance($deptId, $startDate, $endDate) {
         return convertRecordSetUtf8($rows);
     } catch (Exception $e) {
         return logDbError('getDepartmentAttendance', $e);
+    }
+}
+
+function getNuporaAttendance($startDate, $endDate) {
+    if (!$startDate || !$endDate) return [];
+    try {
+        $pdo = getNuporaConnection();
+        $sql = "SELECT userid, CheckTime, CheckType, Sensorid
+                FROM Checkinout
+                WHERE CheckTime >= :startDate
+                AND CheckTime < :endDateNext
+                ORDER BY userid, CheckTime";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':startDate', $startDate);
+        $endDateNext = date('Y-m-d', strtotime($endDate . ' +1 day'));
+        $stmt->bindValue(':endDateNext', $endDateNext);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return convertRecordSetUtf8($rows);
+    } catch (Exception $e) {
+        return logDbError('getNuporaAttendance', $e);
     }
 }
 
@@ -276,6 +356,7 @@ function isCalculatedShift($shift) {
 function getAttendanceControlData($deptId = 4, $days = 7, $startDate = null, $endDate = null) {
     try {
         $deptId = (int) $deptId;
+        $dataSource = getDataSourceByDeptId($deptId);
         $startDate = $startDate ?: null;
         $endDate = $endDate ?: null;
         if ($startDate && !$endDate) $endDate = $startDate;
@@ -387,6 +468,8 @@ function getAttendanceControlData($deptId = 4, $days = 7, $startDate = null, $en
                 'name' => $user['Name'],
                 'usercode' => $user['UserCode'],
                 'date' => $date,
+                'dept_id' => $deptId,
+                'data_source' => $dataSource,
                 'day_name' => getDayName($date),
                 'shifts' => $expectedShifts,
                 'entries' => $dayAttendance['entrada'],
@@ -462,16 +545,18 @@ function getDepartments() {
         $sql = "SELECT Deptid, DeptName FROM Dept WHERE Deptid <> 1 ORDER BY DeptName";
 
         $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $departments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $departments[] = ['Deptid' => NUPORA_DEPT_ID, 'DeptName' => 'Ñu Pora'];
+        return $departments;
     } catch (Exception $e) {
         error_log("Error en getDepartments: " . $e->getMessage());
         return [];
     }
 }
 
-function saveUserDayMarks($userId, $date, $entries, $exits, $sensorId = 1) {
+function saveUserDayMarks($userId, $date, $entries, $exits, $sensorId = 1, $dataSource = 'donbosco') {
     if (!$userId || !$date) return false;
-    $pdo = getConnection();
+    $pdo = getConnectionBySource($dataSource);
     $start = $date . ' 00:00:00';
     $end = $date . ' 23:59:59';
     try {
