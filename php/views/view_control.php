@@ -51,6 +51,15 @@ if (isset($_GET['action'])) {
         case 'create_auth_user':
             handleCreateAuthUser();
             break;
+        case 'get_auth_users':
+            handleGetAuthUsers();
+            break;
+        case 'reset_auth_password':
+            handleResetAuthPassword();
+            break;
+        case 'update_auth_role':
+            handleUpdateAuthRole();
+            break;
         default:
             echo json_encode(['success' => false, 'message' => 'Acción no válida']);
             }
@@ -345,6 +354,85 @@ function handleCreateAuthUser() {
         $created = createAuthUser($username, $password, $role);
         if (!$created) {
             echo json_encode(['success' => false, 'message' => 'El usuario ya existe']);
+            return;
+        }
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function handleGetAuthUsers() {
+    // Provide a list of active authentication users for admin tasks.
+    $authUser = getAuthenticatedUser();
+    if (!$authUser || !isAdminUser($authUser)) {
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
+        return;
+    }
+    try {
+        $users = getAuthUsers();
+        echo json_encode(['success' => true, 'data' => $users]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function handleResetAuthPassword() {
+    // Reset the password for a selected authentication user.
+    $authUser = getAuthenticatedUser();
+    if (!$authUser || !isAdminUser($authUser)) {
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
+        return;
+    }
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input) {
+        echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+        return;
+    }
+    $userId = intval($input['user_id'] ?? 0);
+    $password = $input['password'] ?? '';
+    if ($userId <= 0 || $password === '') {
+        echo json_encode(['success' => false, 'message' => 'Completa todos los campos']);
+        return;
+    }
+    try {
+        $updated = updateAuthUserPassword($userId, $password);
+        if (!$updated) {
+            echo json_encode(['success' => false, 'message' => 'No se pudo actualizar la clave']);
+            return;
+        }
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function handleUpdateAuthRole() {
+    // Update the role for a selected authentication user.
+    $authUser = getAuthenticatedUser();
+    if (!$authUser || !isAdminUser($authUser)) {
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
+        return;
+    }
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input) {
+        echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+        return;
+    }
+    $userId = intval($input['user_id'] ?? 0);
+    $role = trim($input['role'] ?? '');
+    if ($userId <= 0 || $role === '') {
+        echo json_encode(['success' => false, 'message' => 'Completa todos los campos']);
+        return;
+    }
+    if (!in_array($role, ['admin', 'user'], true)) {
+        echo json_encode(['success' => false, 'message' => 'Rol inválido']);
+        return;
+    }
+    try {
+        $updated = updateAuthUserRole($userId, $role);
+        if (!$updated) {
+            echo json_encode(['success' => false, 'message' => 'No se pudo actualizar el rol']);
             return;
         }
         echo json_encode(['success' => true]);
@@ -776,6 +864,52 @@ $isAdmin = isAdminUser($authUser);
                                     </div>
                                 </form>
                                 <div class="text-muted small mt-2">Solo los administradores pueden crear usuarios.</div>
+                            </div>
+                            <div class="config-card mt-4">
+                                <h6 class="mb-3">Administrar usuarios existentes</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="manage-user-select" class="form-label">Usuario</label>
+                                        <select class="form-select form-select-sm" id="manage-user-select">
+                                            <option value="">Selecciona un usuario</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-end">
+                                        <div class="text-muted small">
+                                            Rol actual: <span id="manage-current-role">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-6">
+                                        <label for="manage-password" class="form-label">Nueva contraseña</label>
+                                        <input type="password" class="form-control form-control-sm" id="manage-password">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="manage-confirm" class="form-label">Confirmar contraseña</label>
+                                        <input type="password" class="form-control form-control-sm" id="manage-confirm">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="button" class="btn btn-outline-primary" id="reset-password-btn">
+                                        <i class="fas fa-key me-1"></i> Recuperar clave
+                                    </button>
+                                </div>
+                                <hr class="my-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="manage-role" class="form-label">Cambiar rol</label>
+                                        <select class="form-select form-select-sm" id="manage-role">
+                                            <option value="user">Usuario</option>
+                                            <option value="admin">Administrador</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-end justify-content-end">
+                                        <button type="button" class="btn btn-outline-secondary" id="update-role-btn">
+                                            <i class="fas fa-user-shield me-1"></i> Actualizar rol
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>

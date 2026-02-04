@@ -16,7 +16,8 @@ const AttendanceControl = (() => {
         timeInput: null,
         configModal: null,
         manualMarkModal: null,
-        manualType: 'entry'
+        manualType: 'entry',
+        authUsers: []
     };
 
     // Cached DOM references for faster access.
@@ -82,6 +83,13 @@ const AttendanceControl = (() => {
         dom.registerPassword = byId('register-password');
         dom.registerConfirm = byId('register-confirm');
         dom.registerRole = byId('register-role');
+        dom.manageUserSelect = byId('manage-user-select');
+        dom.manageCurrentRole = byId('manage-current-role');
+        dom.managePassword = byId('manage-password');
+        dom.manageConfirm = byId('manage-confirm');
+        dom.manageRole = byId('manage-role');
+        dom.resetPasswordBtn = byId('reset-password-btn');
+        dom.updateRoleBtn = byId('update-role-btn');
     };
 
     const setupFilters = () => {
@@ -154,6 +162,7 @@ const AttendanceControl = (() => {
         if (dom.configBtn && state.configModal) {
             dom.configBtn.addEventListener('click', () => {
                 loadDbConfig();
+                if (dom.manageUserSelect) loadAuthUsers();
                 state.configModal.show();
             });
         }
@@ -171,6 +180,18 @@ const AttendanceControl = (() => {
 
         if (dom.registerForm) {
             dom.registerForm.addEventListener('submit', handleRegisterSubmit);
+        }
+
+        if (dom.manageUserSelect) {
+            dom.manageUserSelect.addEventListener('change', handleManageUserChange);
+        }
+
+        if (dom.resetPasswordBtn) {
+            dom.resetPasswordBtn.addEventListener('click', handlePasswordReset);
+        }
+
+        if (dom.updateRoleBtn) {
+            dom.updateRoleBtn.addEventListener('click', handleRoleUpdate);
         }
     };
 
@@ -282,6 +303,106 @@ const AttendanceControl = (() => {
                 if (!result.success) throw new Error(result.message || 'Error al registrar');
                 showToast('Usuario registrado');
                 dom.registerForm.reset();
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
+    };
+
+    const loadAuthUsers = () => {
+        if (!dom.manageUserSelect) return;
+        dom.manageUserSelect.innerHTML = '<option value="">Cargando...</option>';
+        fetch('view_control.php?action=get_auth_users')
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al cargar usuarios');
+                state.authUsers = result.data || [];
+                dom.manageUserSelect.innerHTML = '<option value="">Selecciona un usuario</option>';
+                state.authUsers.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.AuthUserId;
+                    option.textContent = `${user.Username} (${user.Role})`;
+                    option.dataset.role = user.Role;
+                    option.dataset.username = user.Username;
+                    dom.manageUserSelect.appendChild(option);
+                });
+                updateManagedRoleDisplay('');
+            })
+            .catch(err => {
+                dom.manageUserSelect.innerHTML = '<option value="">Sin resultados</option>';
+                showToast(err.message || 'Error', 'danger');
+            });
+    };
+
+    const updateManagedRoleDisplay = (role) => {
+        if (dom.manageCurrentRole) {
+            dom.manageCurrentRole.textContent = role || '-';
+        }
+        if (dom.manageRole) {
+            dom.manageRole.value = role || 'user';
+        }
+    };
+
+    const handleManageUserChange = () => {
+        if (!dom.manageUserSelect) return;
+        const selected = dom.manageUserSelect.selectedOptions[0];
+        const role = selected?.dataset?.role || '';
+        updateManagedRoleDisplay(role);
+    };
+
+    const handlePasswordReset = () => {
+        if (!dom.manageUserSelect || !dom.managePassword || !dom.manageConfirm) return;
+        const userId = dom.manageUserSelect.value;
+        const password = dom.managePassword.value;
+        const confirm = dom.manageConfirm.value;
+        if (!userId) {
+            showToast('Selecciona un usuario', 'danger');
+            return;
+        }
+        if (!password || !confirm) {
+            showToast('Completa todos los campos', 'danger');
+            return;
+        }
+        if (password !== confirm) {
+            showToast('Las contraseñas no coinciden', 'danger');
+            return;
+        }
+        fetch('view_control.php?action=reset_auth_password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, password })
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al actualizar');
+                showToast('Clave actualizada');
+                dom.managePassword.value = '';
+                dom.manageConfirm.value = '';
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
+    };
+
+    const handleRoleUpdate = () => {
+        if (!dom.manageUserSelect || !dom.manageRole) return;
+        const userId = dom.manageUserSelect.value;
+        const role = dom.manageRole.value;
+        if (!userId) {
+            showToast('Selecciona un usuario', 'danger');
+            return;
+        }
+        fetch('view_control.php?action=update_auth_role', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, role })
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error al actualizar');
+                showToast('Rol actualizado');
+                updateManagedRoleDisplay(role);
+                const selected = dom.manageUserSelect.selectedOptions[0];
+                if (selected) {
+                    selected.dataset.role = role;
+                    selected.textContent = `${selected.dataset.username} (${role})`;
+                }
             })
             .catch(err => showToast(err.message || 'Error', 'danger'));
     };

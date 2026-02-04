@@ -88,3 +88,32 @@ function createAuthUser($username, $password, $role = 'user') {
     $insert->execute();
     return true;
 }
+
+function getAuthUsers() {
+    // Fetch active authentication users for admin management.
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('SELECT AuthUserId, Username, Role FROM AuthUsers WHERE IsActive = 1 ORDER BY Username');
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function updateAuthUserPassword($userId, $password) {
+    // Update the password hash for an authentication user.
+    $pdo = getConnection();
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare('UPDATE AuthUsers SET PasswordHash = :hash WHERE AuthUserId = :userId');
+    $stmt->bindValue(':hash', $hash);
+    $stmt->bindValue(':userId', $userId);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+}
+
+function updateAuthUserRole($userId, $role) {
+    // Update the role for an authentication user.
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('UPDATE AuthUsers SET Role = :role WHERE AuthUserId = :userId');
+    $stmt->bindValue(':role', $role);
+    $stmt->bindValue(':userId', $userId);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+}
