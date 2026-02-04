@@ -24,6 +24,7 @@ const AttendanceControl = (() => {
     const dom = {};
 
     const byId = (id) => document.getElementById(id);
+    const resolveDataSource = (deptId) => String(deptId) === String(NUPORA_DEPT_ID) ? 'nupora' : 'donbosco';
 
     // Entry point to wire listeners and load data.
     const init = () => {
@@ -524,7 +525,8 @@ const AttendanceControl = (() => {
             user_id: userId,
             date,
             time,
-            type: state.manualType
+            type: state.manualType,
+            data_source: resolveDataSource(deptId)
         })
             .then(resp => {
                 if (!resp.success) throw new Error(resp.message || 'Error al guardar');
@@ -750,6 +752,7 @@ const AttendanceControl = (() => {
                 row.dataset.status = record.status;
                 row.dataset.userid = record.userid;
                 row.dataset.date = record.date;
+                row.dataset.source = record.data_source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0');
                 row.classList.add(
                     record.status === 'absent' ? 'row-absent' :
                     record.status === 'warning' ? 'row-warning' :
@@ -1002,7 +1005,8 @@ const AttendanceControl = (() => {
             user_id: row.dataset.userid,
             date: row.dataset.date,
             entries: collectTimes(row.querySelector('.entry-cell')),
-            exits: collectTimes(row.querySelector('.exit-cell'))
+            exits: collectTimes(row.querySelector('.exit-cell')),
+            data_source: row.dataset.source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
         };
 
         const actionsCell = row.querySelector('.actions-cell');
@@ -1027,7 +1031,8 @@ const AttendanceControl = (() => {
         const params = new URLSearchParams({
             action: 'get_user_details',
             user_id: row.dataset.userid,
-            date: row.dataset.date
+            date: row.dataset.date,
+            data_source: row.dataset.source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
         });
         fetch(`view_control.php?${params.toString()}`)
             .then(r => r.json())
@@ -1218,7 +1223,8 @@ const AttendanceControl = (() => {
             user_id: item.userid,
             date: item.date,
             time: mark.time,
-            type: mark.type
+            type: mark.type,
+            data_source: item.data_source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
         }));
 
         Promise.all(promises)
@@ -1329,14 +1335,16 @@ const AttendanceControl = (() => {
                     user_id: record.userid,
                     date: record.date,
                     time: mark.time,
-                    type: 'entry'
+                    type: 'entry',
+                    data_source: record.data_source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
                 }));
             } else if (!inEntry && inExit) {
                 operations.push(sendAttendance('reassign_mark', {
                     user_id: record.userid,
                     date: record.date,
                     time: mark.time,
-                    new_type: 'exit'
+                    new_type: 'exit',
+                    data_source: record.data_source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
                 }));
             }
         });
@@ -1348,14 +1356,16 @@ const AttendanceControl = (() => {
                     user_id: record.userid,
                     date: record.date,
                     time: mark.time,
-                    type: 'exit'
+                    type: 'exit',
+                    data_source: record.data_source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
                 }));
             } else if (!inExit && inEntry) {
                 operations.push(sendAttendance('reassign_mark', {
                     user_id: record.userid,
                     date: record.date,
                     time: mark.time,
-                    new_type: 'entry'
+                    new_type: 'entry',
+                    data_source: record.data_source || resolveDataSource(dom.deptFilter ? dom.deptFilter.value : '0')
                 }));
             }
         });

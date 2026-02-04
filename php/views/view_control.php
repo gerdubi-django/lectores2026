@@ -104,18 +104,19 @@ function handleGetUserDetails() {
     try {
         $userId = $_GET['user_id'] ?? '';
         $date = $_GET['date'] ?? '';
+        $dataSource = $_GET['data_source'] ?? 'donbosco';
 
         if (!$userId || !$date) throw new Exception('Parámetros faltantes');
 
-        $pdo = getConnection();
+        $pdo = getConnectionBySource($dataSource);
         $stmt = $pdo->prepare("SELECT u.*, d.DeptName FROM Userinfo u LEFT JOIN Dept d ON u.Deptid = d.Deptid WHERE u.userid = :userId");
         $stmt->bindParam(':userId', $userId);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$user) throw new Exception('Usuario no encontrado');
 
-        $shifts = getUserShifts($userId, $date, $date);
-        $attendance = getUserAttendance($userId, $date, $date);
+        $shifts = getUserShifts($userId, $date, $date, $dataSource);
+        $attendance = getUserAttendance($userId, $date, $date, $dataSource);
         $grouped = groupAttendanceByDate($attendance);
         $dayAttendance = $grouped[$date] ?? ['entrada' => [], 'salida' => []];
 
@@ -186,11 +187,12 @@ function handleSaveMarks() {
         $date = $input['date'] ?? null;
         $entries = $input['entries'] ?? [];
         $exits = $input['exits'] ?? [];
+        $dataSource = $input['data_source'] ?? 'donbosco';
         if (!$userId || !$date) throw new Exception('Parámetros faltantes');
 
         $authUser = getAuthenticatedUser();
         $manualSensorId = isAdminUser($authUser) ? 1 : 2;
-        saveUserDayMarks($userId, $date, $entries, $exits, $manualSensorId);
+        saveUserDayMarks($userId, $date, $entries, $exits, $manualSensorId, $dataSource);
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
@@ -926,6 +928,9 @@ $isAdmin = isAdminUser($authUser);
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+    const NUPORA_DEPT_ID = <?= json_encode(NUPORA_DEPT_ID) ?>;
+</script>
 <script src="../../js/asistencia_ajax.js"></script>
 <script src="../../js/views/view_control.js"></script>
 </body>

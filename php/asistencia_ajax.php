@@ -29,6 +29,7 @@ try {
     }
     $authUser = getAuthenticatedUser();
     $manualSensorId = isAdminUser($authUser) ? 1 : 2;
+    $dataSource = $input['data_source'] ?? 'donbosco';
     switch ($action) {
         case 'save_marks':
             $userId = $input['user_id'] ?? null;
@@ -36,7 +37,7 @@ try {
             $entries = $input['entries'] ?? [];
             $exits = $input['exits'] ?? [];
             if (!$userId || !$date) throw new Exception('Parámetros faltantes');
-            saveUserDayMarks($userId, $date, $entries, $exits, $manualSensorId);
+            saveUserDayMarks($userId, $date, $entries, $exits, $manualSensorId, $dataSource);
             sendJson(['success' => true]);
             break;
         case 'add_mark':
@@ -45,7 +46,7 @@ try {
             $time = $input['time'] ?? null;
             $type = $input['type'] ?? null; // 'entry' o 'exit'
             if (!$userId || !$date || !$time || $type === null) throw new Exception('Parámetros faltantes');
-            $pdo = getConnection();
+            $pdo = getConnectionBySource($dataSource);
             $stmt = $pdo->prepare('INSERT INTO Checkinout (userid, CheckTime, CheckType, Sensorid) VALUES (?, ?, ?, ?)');
             $stmt->execute([$userId, "$date $time", $type === 'entry' ? 0 : 1, $manualSensorId]);
             sendJson(['success' => true]);
@@ -56,7 +57,7 @@ try {
             $time = $input['time'] ?? null;
             $type = $input['type'] ?? null;
             if (!$userId || !$date || !$time || $type === null) throw new Exception('Parámetros faltantes');
-            $pdo = getConnection();
+            $pdo = getConnectionBySource($dataSource);
             $stmt = $pdo->prepare('DELETE FROM Checkinout WHERE userid = ? AND CheckTime = ? AND CheckType = ?');
             $stmt->execute([$userId, "$date $time", $type === 'entry' ? 0 : 1]);
             if ($stmt->rowCount() > 0) {
@@ -71,7 +72,7 @@ try {
             $time = $input['time'] ?? null;
             $new = $input['new_type'] ?? null; // 'entry' o 'exit'
             if (!$userId || !$date || !$time || $new === null) throw new Exception('Parámetros faltantes');
-            $pdo = getConnection();
+            $pdo = getConnectionBySource($dataSource);
             $stmt = $pdo->prepare('UPDATE Checkinout SET CheckType = ? WHERE userid = ? AND CheckTime = ?');
             $stmt->execute([$new === 'entry' ? 0 : 1, $userId, "$date $time"]);
             sendJson(['success' => true]);
