@@ -571,9 +571,6 @@ function getAuthUserDepartmentIds($authUserId) {
 
 function getAuthorizedDepartments($authUser, $departments) {
     // Filter departments based on the authenticated user access list.
-    if (isAdminUser($authUser)) {
-        return $departments;
-    }
     $authUserId = $authUser['id'] ?? null;
     if (!$authUserId) return [];
     $allowedIds = getAuthorizedDepartmentIds($authUser);

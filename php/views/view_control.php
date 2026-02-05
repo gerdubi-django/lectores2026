@@ -614,7 +614,7 @@ function renderLoginView($errorMessage, $logoutNotice) {
 $allDepartments = getDepartments();
 $authUser = getAuthenticatedUser();
 $isAdmin = isAdminUser($authUser);
-$departments = $isAdmin ? $allDepartments : getAuthorizedDepartments($authUser, $allDepartments);
+$departments = getAuthorizedDepartments($authUser, $allDepartments);
 $deptIds = array_map('intval', array_column($departments, 'Deptid'));
 $defaultDeptId = in_array(4, $deptIds, true) ? 4 : ($deptIds[0] ?? 0);
 ?>
