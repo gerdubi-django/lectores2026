@@ -280,7 +280,7 @@ body {
     font-weight: 500;
 }
 
-.badge-manual-non-admin {
+.badge.badge-manual-non-admin {
     background: var(--manual-non-admin) !important;
     color: #fff;
 }

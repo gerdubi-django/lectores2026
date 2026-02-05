@@ -733,7 +733,7 @@ $allDepartments = $isAdmin ? getDepartments() : [];
             <div class="legend-item"><span class="status-indicator status-normal"></span> Normal</div>
             <div class="legend-item" id="legend-warning"><span class="status-indicator status-warning"></span> Tardanza/Salida temprana (+15 min)</div>
             <div class="legend-item" id="legend-absent"><span class="status-indicator status-absent"></span> Ausente</div>
-            <div class="legend-item"><span class="status-indicator status-manual-non-admin"></span> Marca manual (no admin)</div>
+            <div class="legend-item"><span class="status-indicator status-manual-non-admin"></span> Marcas Manuales</div>
         </div>
 
         <div class="attendance-table-container panel-surface mt-3">
