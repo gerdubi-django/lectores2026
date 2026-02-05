@@ -721,7 +721,7 @@ const AttendanceControl = (() => {
             .map(t => {
                 const isManualNonAdmin = Boolean(t.manual_non_admin);
                 const extraClass = isManualNonAdmin ? ' badge-manual-non-admin' : '';
-                const title = isManualNonAdmin ? 'title="Marca manual (no admin)"' : '';
+                const title = isManualNonAdmin ? 'title="Marcas Manuales"' : '';
                 return `<span class="badge bg-info${extraClass}" ${title}>${formatTime(t.time)}</span>`;
             })
             .join(' ');
