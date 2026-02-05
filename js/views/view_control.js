@@ -337,7 +337,7 @@ const AttendanceControl = (() => {
                 if (!result.success) throw new Error(result.message || 'Error al cargar usuarios');
                 state.authUsers = result.data || [];
                 populateAuthUserSelect(dom.manageUserSelect, 'Selecciona un usuario');
-                populateAuthUserSelect(dom.deptUserSelect, 'Selecciona un usuario');
+                populateAuthUserSelect(dom.deptUserSelect, 'Select a user');
                 updateManagedRoleDisplay('');
                 if (dom.deptUserSelect) {
                     dom.deptUserSelect.value = '';
@@ -349,7 +349,7 @@ const AttendanceControl = (() => {
                     dom.manageUserSelect.innerHTML = '<option value="">Sin resultados</option>';
                 }
                 if (dom.deptUserSelect) {
-                    dom.deptUserSelect.innerHTML = '<option value="">Sin resultados</option>';
+                    dom.deptUserSelect.innerHTML = '<option value="">No results</option>';
                 }
                 showToast(err.message || 'Error', 'danger');
             });
@@ -399,7 +399,7 @@ const AttendanceControl = (() => {
         fetch(`view_control.php?${params.toString()}`)
             .then(r => r.json())
             .then(result => {
-                if (!result.success) throw new Error(result.message || 'Error al cargar departamentos');
+                if (!result.success) throw new Error(result.message || 'Error loading departments');
                 applyDeptSelection(result.data || []);
             })
             .catch(err => {
@@ -427,7 +427,7 @@ const AttendanceControl = (() => {
         if (!dom.deptUserSelect) return;
         const userId = dom.deptUserSelect.value;
         if (!userId) {
-            showToast('Selecciona un usuario', 'danger');
+            showToast('Select a user', 'danger');
             return;
         }
         const deptIds = getDeptCheckboxes()
@@ -440,8 +440,8 @@ const AttendanceControl = (() => {
         })
             .then(r => r.json())
             .then(result => {
-                if (!result.success) throw new Error(result.message || 'Error al guardar departamentos');
-                showToast('Acceso a departamentos guardado');
+                if (!result.success) throw new Error(result.message || 'Error saving departments');
+                showToast('Department access saved');
             })
             .catch(err => showToast(err.message || 'Error', 'danger'));
     };
