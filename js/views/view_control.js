@@ -91,6 +91,9 @@ const AttendanceControl = (() => {
         dom.manageRole = byId('manage-role');
         dom.resetPasswordBtn = byId('reset-password-btn');
         dom.updateRoleBtn = byId('update-role-btn');
+        dom.deptUserSelect = byId('dept-user-select');
+        dom.deptSaveBtn = byId('dept-save-btn');
+        dom.deptClearBtn = byId('dept-clear-btn');
     };
 
     const setupFilters = () => {
@@ -163,7 +166,7 @@ const AttendanceControl = (() => {
         if (dom.configBtn && state.configModal) {
             dom.configBtn.addEventListener('click', () => {
                 loadDbConfig();
-                if (dom.manageUserSelect) loadAuthUsers();
+                if (dom.manageUserSelect || dom.deptUserSelect) loadAuthUsers();
                 state.configModal.show();
             });
         }
@@ -193,6 +196,18 @@ const AttendanceControl = (() => {
 
         if (dom.updateRoleBtn) {
             dom.updateRoleBtn.addEventListener('click', handleRoleUpdate);
+        }
+
+        if (dom.deptUserSelect) {
+            dom.deptUserSelect.addEventListener('change', handleDeptUserChange);
+        }
+
+        if (dom.deptSaveBtn) {
+            dom.deptSaveBtn.addEventListener('click', handleDeptAccessSave);
+        }
+
+        if (dom.deptClearBtn) {
+            dom.deptClearBtn.addEventListener('click', clearDeptSelection);
         }
     };
 
@@ -309,28 +324,48 @@ const AttendanceControl = (() => {
     };
 
     const loadAuthUsers = () => {
-        if (!dom.manageUserSelect) return;
-        dom.manageUserSelect.innerHTML = '<option value="">Cargando...</option>';
+        if (!dom.manageUserSelect && !dom.deptUserSelect) return;
+        if (dom.manageUserSelect) {
+            dom.manageUserSelect.innerHTML = '<option value="">Cargando...</option>';
+        }
+        if (dom.deptUserSelect) {
+            dom.deptUserSelect.innerHTML = '<option value="">Cargando...</option>';
+        }
         fetch('view_control.php?action=get_auth_users')
             .then(r => r.json())
             .then(result => {
                 if (!result.success) throw new Error(result.message || 'Error al cargar usuarios');
                 state.authUsers = result.data || [];
-                dom.manageUserSelect.innerHTML = '<option value="">Selecciona un usuario</option>';
-                state.authUsers.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user.AuthUserId;
-                    option.textContent = `${user.Username} (${user.Role})`;
-                    option.dataset.role = user.Role;
-                    option.dataset.username = user.Username;
-                    dom.manageUserSelect.appendChild(option);
-                });
+                populateAuthUserSelect(dom.manageUserSelect, 'Selecciona un usuario');
+                populateAuthUserSelect(dom.deptUserSelect, 'Select a user');
                 updateManagedRoleDisplay('');
+                if (dom.deptUserSelect) {
+                    dom.deptUserSelect.value = '';
+                    clearDeptSelection();
+                }
             })
             .catch(err => {
-                dom.manageUserSelect.innerHTML = '<option value="">Sin resultados</option>';
+                if (dom.manageUserSelect) {
+                    dom.manageUserSelect.innerHTML = '<option value="">Sin resultados</option>';
+                }
+                if (dom.deptUserSelect) {
+                    dom.deptUserSelect.innerHTML = '<option value="">No results</option>';
+                }
                 showToast(err.message || 'Error', 'danger');
             });
+    };
+
+    const populateAuthUserSelect = (select, placeholder) => {
+        if (!select) return;
+        select.innerHTML = `<option value="">${placeholder}</option>`;
+        state.authUsers.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user.AuthUserId;
+            option.textContent = `${user.Username} (${user.Role})`;
+            option.dataset.role = user.Role;
+            option.dataset.username = user.Username;
+            select.appendChild(option);
+        });
     };
 
     const updateManagedRoleDisplay = (role) => {
@@ -347,6 +382,68 @@ const AttendanceControl = (() => {
         const selected = dom.manageUserSelect.selectedOptions[0];
         const role = selected?.dataset?.role || '';
         updateManagedRoleDisplay(role);
+    };
+
+    const handleDeptUserChange = () => {
+        if (!dom.deptUserSelect) return;
+        const userId = dom.deptUserSelect.value;
+        if (!userId) {
+            clearDeptSelection();
+            return;
+        }
+        loadDeptAccess(userId);
+    };
+
+    const loadDeptAccess = (userId) => {
+        const params = new URLSearchParams({ action: 'get_auth_user_departments', user_id: userId });
+        fetch(`view_control.php?${params.toString()}`)
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error loading departments');
+                applyDeptSelection(result.data || []);
+            })
+            .catch(err => {
+                clearDeptSelection();
+                showToast(err.message || 'Error', 'danger');
+            });
+    };
+
+    const getDeptCheckboxes = () => Array.from(document.querySelectorAll('.dept-access-checkbox'));
+
+    const applyDeptSelection = (deptIds) => {
+        const selected = new Set((deptIds || []).map(id => String(id)));
+        getDeptCheckboxes().forEach(checkbox => {
+            checkbox.checked = selected.has(checkbox.value);
+        });
+    };
+
+    const clearDeptSelection = () => {
+        getDeptCheckboxes().forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    };
+
+    const handleDeptAccessSave = () => {
+        if (!dom.deptUserSelect) return;
+        const userId = dom.deptUserSelect.value;
+        if (!userId) {
+            showToast('Select a user', 'danger');
+            return;
+        }
+        const deptIds = getDeptCheckboxes()
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        fetch('view_control.php?action=save_auth_user_departments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, dept_ids: deptIds })
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (!result.success) throw new Error(result.message || 'Error saving departments');
+                showToast('Department access saved');
+            })
+            .catch(err => showToast(err.message || 'Error', 'danger'));
     };
 
     const handlePasswordReset = () => {
