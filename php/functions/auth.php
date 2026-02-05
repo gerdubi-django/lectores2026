@@ -36,6 +36,15 @@ function setAuthenticatedUser($user) {
     ];
 }
 
+function setAuthenticatedUserDepartments($deptIds) {
+    // Store authorized department ids in the session.
+    if (!isset($_SESSION['auth_user'])) {
+        return;
+    }
+    $normalized = array_values(array_unique(array_map('intval', $deptIds)));
+    $_SESSION['auth_user']['dept_ids'] = $normalized;
+}
+
 function clearAuthenticatedUser() {
     // Destroy the current authentication session.
     $_SESSION = [];

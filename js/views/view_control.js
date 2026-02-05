@@ -399,7 +399,7 @@ const AttendanceControl = (() => {
         fetch(`view_control.php?${params.toString()}`)
             .then(r => r.json())
             .then(result => {
-                if (!result.success) throw new Error(result.message || 'Error loading departments');
+                if (!result.success) throw new Error(result.message || 'Error al cargar departamentos');
                 applyDeptSelection(result.data || []);
             })
             .catch(err => {
@@ -427,7 +427,7 @@ const AttendanceControl = (() => {
         if (!dom.deptUserSelect) return;
         const userId = dom.deptUserSelect.value;
         if (!userId) {
-            showToast('Select a user', 'danger');
+            showToast('Selecciona un usuario', 'danger');
             return;
         }
         const deptIds = getDeptCheckboxes()
@@ -440,8 +440,8 @@ const AttendanceControl = (() => {
         })
             .then(r => r.json())
             .then(result => {
-                if (!result.success) throw new Error(result.message || 'Error saving departments');
-                showToast('Department access saved');
+                if (!result.success) throw new Error(result.message || 'Error al guardar departamentos');
+                showToast('Acceso por departamento guardado');
             })
             .catch(err => showToast(err.message || 'Error', 'danger'));
     };

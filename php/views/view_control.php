@@ -91,18 +91,14 @@ function handleGetAttendanceData() {
         if (!$authUser) {
             throw new Exception('Authentication required');
         }
-        if (!isAdminUser($authUser)) {
-            $allowedDeptIds = getAuthUserDepartmentIds($authUser['id']);
-            if (empty($allowedDeptIds)) {
-                throw new Exception('No departments assigned');
-            }
-            if ($deptId === 0) {
-                $result = getAttendanceControlDataForDepartments($allowedDeptIds, $days, $startDate, $endDate);
-            } elseif (!in_array($deptId, $allowedDeptIds, true)) {
-                throw new Exception('Unauthorized department');
-            } else {
-                $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
-            }
+        $allowedDeptIds = getAuthorizedDepartmentIds($authUser);
+        if (empty($allowedDeptIds)) {
+            throw new Exception('No departments assigned');
+        }
+        if ($deptId === 0) {
+            $result = getAttendanceControlDataForDepartments($allowedDeptIds, $days, $startDate, $endDate);
+        } elseif (!in_array($deptId, $allowedDeptIds, true)) {
+            throw new Exception('Unauthorized department');
         } else {
             $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
         }
@@ -300,18 +296,14 @@ function handleGetDepartmentUsers() {
     try {
         $deptId = isset($_GET['dept_id']) ? intval($_GET['dept_id']) : 0;
         $authUser = getAuthenticatedUser();
-        if (!isAdminUser($authUser)) {
-            $allowedDeptIds = getAuthUserDepartmentIds($authUser['id'] ?? null);
-            if (empty($allowedDeptIds)) {
-                throw new Exception('No departments assigned');
-            }
-            if ($deptId === 0) {
-                $users = getUsersByDepartments($allowedDeptIds);
-            } elseif (!in_array($deptId, $allowedDeptIds, true)) {
-                throw new Exception('Unauthorized department');
-            } else {
-                $users = getUsersByDepartment($deptId);
-            }
+        $allowedDeptIds = getAuthorizedDepartmentIds($authUser);
+        if (empty($allowedDeptIds)) {
+            throw new Exception('No departments assigned');
+        }
+        if ($deptId === 0) {
+            $users = getUsersByDepartments($allowedDeptIds);
+        } elseif (!in_array($deptId, $allowedDeptIds, true)) {
+            throw new Exception('Unauthorized department');
         } else {
             $users = getUsersByDepartment($deptId);
         }
@@ -359,6 +351,8 @@ function handleLogin() {
         return;
     }
     setAuthenticatedUser($user);
+    $deptIds = getAuthUserDepartmentIds($user['AuthUserId']);
+    setAuthenticatedUserDepartments($deptIds);
     echo json_encode(['success' => true]);
 }
 
@@ -464,6 +458,9 @@ function handleSaveAuthUserDepartments() {
     if (!$saved) {
         echo json_encode(['success' => false, 'message' => 'Unable to save departments']);
         return;
+    }
+    if ((int) $authUser['id'] === $userId) {
+        setAuthenticatedUserDepartments($deptIds);
     }
     echo json_encode(['success' => true]);
 }
@@ -605,7 +602,7 @@ function renderLoginView($errorMessage, $logoutNotice) {
 $allDepartments = getDepartments();
 $authUser = getAuthenticatedUser();
 $isAdmin = isAdminUser($authUser);
-$departments = $isAdmin ? $allDepartments : getAuthorizedDepartments($authUser, $allDepartments);
+$departments = getAuthorizedDepartments($authUser, $allDepartments);
 $deptIds = array_map('intval', array_column($departments, 'Deptid'));
 $defaultDeptId = in_array(4, $deptIds, true) ? 4 : ($deptIds[0] ?? 0);
 ?>
@@ -888,7 +885,7 @@ $defaultDeptId = in_array(4, $deptIds, true) ? 4 : ($deptIds[0] ?? 0);
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#departments-tab" type="button" role="tab">
-                                Departments
+                                Departamentos
                             </button>
                         </li>
                     <?php endif; ?>
@@ -1025,20 +1022,20 @@ $defaultDeptId = in_array(4, $deptIds, true) ? 4 : ($deptIds[0] ?? 0);
                         </div>
                         <div class="tab-pane fade" id="departments-tab" role="tabpanel">
                             <div class="config-card">
-                                <h6 class="mb-3">Department access</h6>
+                                <h6 class="mb-3">Acceso por departamento</h6>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label for="dept-user-select" class="form-label">User</label>
+                                        <label for="dept-user-select" class="form-label">Usuario</label>
                                         <select class="form-select form-select-sm" id="dept-user-select">
-                                            <option value="">Select a user</option>
+                                            <option value="">Selecciona un usuario</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 d-flex align-items-end justify-content-end">
                                         <button type="button" class="btn btn-outline-secondary me-2" id="dept-clear-btn">
-                                            Clear selection
+                                            Limpiar selección
                                         </button>
                                         <button type="button" class="btn btn-primary" id="dept-save-btn">
-                                            <i class="fas fa-save me-1"></i> Save access
+                                            <i class="fas fa-save me-1"></i> Guardar acceso
                                         </button>
                                     </div>
                                 </div>
@@ -1057,7 +1054,7 @@ $defaultDeptId = in_array(4, $deptIds, true) ? 4 : ($deptIds[0] ?? 0);
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <div class="text-muted small mt-3">Only selected departments are visible after login.</div>
+                                <div class="text-muted small mt-3">Solo los departamentos seleccionados se muestran al iniciar sesión.</div>
                             </div>
                         </div>
                     <?php endif; ?>
