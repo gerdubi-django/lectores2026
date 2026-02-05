@@ -555,6 +555,32 @@ function getDepartments() {
     }
 }
 
+function getDepartmentsByIds($deptIds) {
+    // Fetch department metadata for the provided ids only.
+    $deptIds = array_values(array_unique(array_map('intval', $deptIds)));
+    if (empty($deptIds)) return [];
+    $hasNupora = in_array(NUPORA_DEPT_ID, $deptIds, true);
+    $filteredIds = array_values(array_filter($deptIds, fn($id) => $id > 0 && $id !== NUPORA_DEPT_ID));
+    $departments = [];
+    try {
+        if (!empty($filteredIds)) {
+            $pdo = getConnection();
+            $placeholders = implode(',', array_fill(0, count($filteredIds), '?'));
+            $sql = "SELECT Deptid, DeptName FROM Dept WHERE Deptid <> 1 AND Deptid IN ($placeholders) ORDER BY DeptName";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($filteredIds);
+            $departments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        if ($hasNupora) {
+            $departments[] = ['Deptid' => NUPORA_DEPT_ID, 'DeptName' => 'Ñu Pora'];
+        }
+    } catch (Exception $e) {
+        error_log("Error en getDepartmentsByIds: " . $e->getMessage());
+        return [];
+    }
+    return $departments;
+}
+
 function getAuthUserDepartmentIds($authUserId) {
     // Return department ids assigned to an auth user.
     if (!$authUserId) return [];
@@ -582,7 +608,7 @@ function getAuthorizedDepartments($authUser, $departments) {
 
 function getAuthorizedDepartmentIds($authUser) {
     // Resolve authorized department ids from session or database.
-    if (!$authUser || isAdminUser($authUser)) {
+    if (!$authUser) {
         return [];
     }
     $sessionIds = $authUser['dept_ids'] ?? [];
