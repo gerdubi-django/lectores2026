@@ -3,6 +3,7 @@
  * Funciones para el control de asistencia
  */
 require_once 'connect.php';
+require_once __DIR__ . '/auth.php';
 
 // ==== Utilidades comunes ====
 
@@ -552,6 +553,107 @@ function getDepartments() {
         error_log("Error en getDepartments: " . $e->getMessage());
         return [];
     }
+}
+
+function getAuthUserDepartmentIds($authUserId) {
+    // Return department ids assigned to an auth user.
+    if (!$authUserId) return [];
+    try {
+        $pdo = getConnection();
+        $stmt = $pdo->prepare('SELECT Deptid FROM AuthUserDepartments WHERE AuthUserId = :authUserId');
+        $stmt->bindValue(':authUserId', $authUserId, PDO::PARAM_INT);
+        $stmt->execute();
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
+    } catch (Exception $e) {
+        return logDbError('getAuthUserDepartmentIds', $e);
+    }
+}
+
+function getAuthorizedDepartments($authUser, $departments) {
+    // Filter departments based on the authenticated user access list.
+    if (isAdminUser($authUser)) {
+        return $departments;
+    }
+    $authUserId = $authUser['id'] ?? null;
+    if (!$authUserId) return [];
+    $allowedIds = getAuthUserDepartmentIds($authUserId);
+    if (empty($allowedIds)) return [];
+    return array_values(array_filter($departments, function ($dept) use ($allowedIds) {
+        return in_array((int) $dept['Deptid'], $allowedIds, true);
+    }));
+}
+
+function getUsersByDepartments($deptIds) {
+    // Fetch users across multiple departments.
+    if (empty($deptIds)) return [];
+    $usersById = [];
+    foreach ($deptIds as $deptId) {
+        $deptUsers = getUsersByDepartment((int) $deptId);
+        foreach ($deptUsers as $user) {
+            $usersById[$user['userid']] = $user;
+        }
+    }
+    $users = array_values($usersById);
+    usort($users, fn($a, $b) => strcmp($a['Name'], $b['Name']));
+    return $users;
+}
+
+function saveAuthUserDepartments($authUserId, $deptIds) {
+    // Replace the department access list for an auth user.
+    if (!$authUserId) return false;
+    $pdo = getConnection();
+    $deptIds = array_values(array_unique(array_map('intval', $deptIds)));
+    try {
+        $pdo->beginTransaction();
+        $delete = $pdo->prepare('DELETE FROM AuthUserDepartments WHERE AuthUserId = :authUserId');
+        $delete->bindValue(':authUserId', $authUserId, PDO::PARAM_INT);
+        $delete->execute();
+        if (!empty($deptIds)) {
+            $insert = $pdo->prepare('INSERT INTO AuthUserDepartments (AuthUserId, Deptid) VALUES (:authUserId, :deptId)');
+            foreach ($deptIds as $deptId) {
+                $insert->bindValue(':authUserId', $authUserId, PDO::PARAM_INT);
+                $insert->bindValue(':deptId', $deptId, PDO::PARAM_INT);
+                $insert->execute();
+            }
+        }
+        $pdo->commit();
+        return true;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        logDbError('saveAuthUserDepartments', $e);
+        return false;
+    }
+}
+
+function buildAttendanceSummary($data) {
+    // Build summary counts from attendance records.
+    $summary = ['total' => 0, 'normal' => 0, 'warnings' => 0, 'absent' => 0];
+    foreach ($data as $record) {
+        $summary['total']++;
+        if ($record['status'] === 'warning') {
+            $summary['warnings']++;
+        } elseif ($record['status'] === 'absent') {
+            $summary['absent']++;
+        } else {
+            $summary['normal']++;
+        }
+    }
+    return $summary;
+}
+
+function getAttendanceControlDataForDepartments($deptIds, $days = 7, $startDate = null, $endDate = null) {
+    // Aggregate attendance data across multiple departments.
+    if (empty($deptIds)) {
+        return ['success' => true, 'data' => [], 'summary' => buildAttendanceSummary([])];
+    }
+    $data = [];
+    foreach ($deptIds as $deptId) {
+        $result = getAttendanceControlData((int) $deptId, $days, $startDate, $endDate);
+        if (!empty($result['data'])) {
+            $data = array_merge($data, $result['data']);
+        }
+    }
+    return ['success' => true, 'data' => $data, 'summary' => buildAttendanceSummary($data)];
 }
 
 function saveUserDayMarks($userId, $date, $entries, $exits, $sensorId = 1, $dataSource = 'donbosco') {
