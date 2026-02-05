@@ -54,6 +54,12 @@ if (isset($_GET['action'])) {
         case 'get_auth_users':
             handleGetAuthUsers();
             break;
+        case 'get_auth_user_departments':
+            handleGetAuthUserDepartments();
+            break;
+        case 'save_auth_user_departments':
+            handleSaveAuthUserDepartments();
+            break;
         case 'reset_auth_password':
             handleResetAuthPassword();
             break;
@@ -81,7 +87,25 @@ function handleGetAttendanceData() {
         $startDate = isset($_GET['start_date']) && $_GET['start_date'] !== '' ? $_GET['start_date'] : null;
         $endDate = isset($_GET['end_date']) && $_GET['end_date'] !== '' ? $_GET['end_date'] : null;
 
-        $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
+        $authUser = getAuthenticatedUser();
+        if (!$authUser) {
+            throw new Exception('Autenticación requerida');
+        }
+        if (!isAdminUser($authUser)) {
+            $allowedDeptIds = getAuthUserDepartmentIds($authUser['id']);
+            if (empty($allowedDeptIds)) {
+                throw new Exception('Sin departamentos asignados');
+            }
+            if ($deptId === 0) {
+                $result = getAttendanceControlDataForDepartments($allowedDeptIds, $days, $startDate, $endDate);
+            } elseif (!in_array($deptId, $allowedDeptIds, true)) {
+                throw new Exception('Departamento no autorizado');
+            } else {
+                $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
+            }
+        } else {
+            $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
+        }
 
         $json = json_encode($result);
         if ($json === false) {
@@ -275,7 +299,22 @@ function handleSaveDbConfig() {
 function handleGetDepartmentUsers() {
     try {
         $deptId = isset($_GET['dept_id']) ? intval($_GET['dept_id']) : 0;
-        $users = getUsersByDepartment($deptId);
+        $authUser = getAuthenticatedUser();
+        if (!isAdminUser($authUser)) {
+            $allowedDeptIds = getAuthUserDepartmentIds($authUser['id'] ?? null);
+            if (empty($allowedDeptIds)) {
+                throw new Exception('Sin departamentos asignados');
+            }
+            if ($deptId === 0) {
+                $users = getUsersByDepartments($allowedDeptIds);
+            } elseif (!in_array($deptId, $allowedDeptIds, true)) {
+                throw new Exception('Departamento no autorizado');
+            } else {
+                $users = getUsersByDepartment($deptId);
+            }
+        } else {
+            $users = getUsersByDepartment($deptId);
+        }
         echo json_encode(['success' => true, 'data' => $users]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
@@ -377,6 +416,56 @@ function handleGetAuthUsers() {
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
+}
+
+function handleGetAuthUserDepartments() {
+    // Return department ids for a selected auth user.
+    $authUser = getAuthenticatedUser();
+    if (!$authUser || !isAdminUser($authUser)) {
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
+        return;
+    }
+    $userId = isset($_GET['user_id']) ? intval($_GET['user_id']) : 0;
+    if ($userId <= 0) {
+        echo json_encode(['success' => false, 'message' => 'Falta usuario']);
+        return;
+    }
+    try {
+        $deptIds = getAuthUserDepartmentIds($userId);
+        echo json_encode(['success' => true, 'data' => $deptIds]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+
+function handleSaveAuthUserDepartments() {
+    // Persist department access for a selected auth user.
+    $authUser = getAuthenticatedUser();
+    if (!$authUser || !isAdminUser($authUser)) {
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado']);
+        return;
+    }
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input) {
+        echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+        return;
+    }
+    $userId = intval($input['user_id'] ?? 0);
+    $deptIds = $input['dept_ids'] ?? [];
+    if ($userId <= 0) {
+        echo json_encode(['success' => false, 'message' => 'Falta usuario']);
+        return;
+    }
+    if (!is_array($deptIds)) {
+        echo json_encode(['success' => false, 'message' => 'Departamentos inválidos']);
+        return;
+    }
+    $saved = saveAuthUserDepartments($userId, $deptIds);
+    if (!$saved) {
+        echo json_encode(['success' => false, 'message' => 'No se pudo guardar los departamentos']);
+        return;
+    }
+    echo json_encode(['success' => true]);
 }
 
 function handleResetAuthPassword() {
@@ -513,9 +602,12 @@ function renderLoginView($errorMessage, $logoutNotice) {
 }
 
 
-$departments = getDepartments();
+$allDepartments = getDepartments();
 $authUser = getAuthenticatedUser();
 $isAdmin = isAdminUser($authUser);
+$departments = $isAdmin ? $allDepartments : getAuthorizedDepartments($authUser, $allDepartments);
+$deptIds = array_map('intval', array_column($departments, 'Deptid'));
+$defaultDeptId = in_array(4, $deptIds, true) ? 4 : ($deptIds[0] ?? 0);
 ?>
 
 <!DOCTYPE html>
@@ -576,12 +668,18 @@ $isAdmin = isAdminUser($authUser);
             <div class="col-md-2">
                 <label for="dept-filter" class="form-label">Departamento</label>
                 <select id="dept-filter" class="form-select form-select-sm">
-                    <?php foreach ($departments as $dept): ?>
-                        <option value="<?= $dept['Deptid'] ?>" <?= $dept['Deptid'] == 4 ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($dept['DeptName']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                    <option value="0">Todos</option>
+                    <?php if (!empty($departments)): ?>
+                        <?php foreach ($departments as $dept): ?>
+                            <option value="<?= $dept['Deptid'] ?>" <?= (int) $dept['Deptid'] === (int) $defaultDeptId ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($dept['DeptName']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                        <?php if (count($departments) > 1): ?>
+                            <option value="0"><?= $isAdmin ? 'Todos' : 'Todos (permitidos)' ?></option>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <option value="0">Sin departamentos asignados</option>
+                    <?php endif; ?>
                 </select>
             </div>
             <div class="col-md-2">
@@ -724,12 +822,18 @@ $isAdmin = isAdminUser($authUser);
                     <div class="mb-3">
                         <label for="manual-dept" class="form-label">Departamento</label>
                         <select id="manual-dept" class="form-select form-select-sm" required>
-                            <?php foreach ($departments as $dept): ?>
-                                <option value="<?= $dept['Deptid'] ?>">
-                                    <?= htmlspecialchars($dept['DeptName']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                            <option value="0">Todos</option>
+                            <?php if (!empty($departments)): ?>
+                                <?php foreach ($departments as $dept): ?>
+                                    <option value="<?= $dept['Deptid'] ?>">
+                                        <?= htmlspecialchars($dept['DeptName']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                                <?php if (count($departments) > 1): ?>
+                                    <option value="0"><?= $isAdmin ? 'Todos' : 'Todos (permitidos)' ?></option>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <option value="0">Sin departamentos asignados</option>
+                            <?php endif; ?>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -780,6 +884,11 @@ $isAdmin = isAdminUser($authUser);
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#users-tab" type="button" role="tab">
                                 Usuarios
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#departments-tab" type="button" role="tab">
+                                Departamentos
                             </button>
                         </li>
                     <?php endif; ?>
@@ -912,6 +1021,43 @@ $isAdmin = isAdminUser($authUser);
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="departments-tab" role="tabpanel">
+                            <div class="config-card">
+                                <h6 class="mb-3">Acceso a departamentos</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="dept-user-select" class="form-label">Usuario</label>
+                                        <select class="form-select form-select-sm" id="dept-user-select">
+                                            <option value="">Selecciona un usuario</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-end justify-content-end">
+                                        <button type="button" class="btn btn-outline-secondary me-2" id="dept-clear-btn">
+                                            Limpiar selección
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="dept-save-btn">
+                                            <i class="fas fa-save me-1"></i> Guardar acceso
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-3">
+                                    <?php foreach ($allDepartments as $dept): ?>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input dept-access-checkbox"
+                                                       type="checkbox"
+                                                       id="dept-access-<?= $dept['Deptid'] ?>"
+                                                       value="<?= $dept['Deptid'] ?>">
+                                                <label class="form-check-label" for="dept-access-<?= $dept['Deptid'] ?>">
+                                                    <?= htmlspecialchars($dept['DeptName']) ?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="text-muted small mt-3">Solo los departamentos seleccionados son visibles al iniciar sesión.</div>
                             </div>
                         </div>
                     <?php endif; ?>
