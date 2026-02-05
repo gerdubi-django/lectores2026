@@ -612,7 +612,7 @@ function getAuthorizedDepartmentIds($authUser) {
         return [];
     }
     $sessionIds = $authUser['dept_ids'] ?? [];
-    $normalized = array_values(array_filter(array_map('intval', $sessionIds), fn($id) => $id > 0));
+    $normalized = array_values(array_filter(array_map('intval', $sessionIds), fn($id) => $id !== 0));
     if (!empty($normalized)) {
         return $normalized;
     }
