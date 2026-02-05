@@ -576,11 +576,25 @@ function getAuthorizedDepartments($authUser, $departments) {
     }
     $authUserId = $authUser['id'] ?? null;
     if (!$authUserId) return [];
-    $allowedIds = getAuthUserDepartmentIds($authUserId);
+    $allowedIds = getAuthorizedDepartmentIds($authUser);
     if (empty($allowedIds)) return [];
     return array_values(array_filter($departments, function ($dept) use ($allowedIds) {
         return in_array((int) $dept['Deptid'], $allowedIds, true);
     }));
+}
+
+function getAuthorizedDepartmentIds($authUser) {
+    // Resolve authorized department ids from session or database.
+    if (!$authUser || isAdminUser($authUser)) {
+        return [];
+    }
+    $sessionIds = $authUser['dept_ids'] ?? [];
+    $normalized = array_values(array_filter(array_map('intval', $sessionIds), fn($id) => $id > 0));
+    if (!empty($normalized)) {
+        return $normalized;
+    }
+    $authUserId = $authUser['id'] ?? null;
+    return getAuthUserDepartmentIds($authUserId);
 }
 
 function getUsersByDepartments($deptIds) {
