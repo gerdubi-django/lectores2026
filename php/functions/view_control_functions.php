@@ -582,7 +582,7 @@ function getAuthorizedDepartments($authUser, $departments) {
 
 function getAuthorizedDepartmentIds($authUser) {
     // Resolve authorized department ids from session or database.
-    if (!$authUser) {
+    if (!$authUser || isAdminUser($authUser)) {
         return [];
     }
     $sessionIds = $authUser['dept_ids'] ?? [];

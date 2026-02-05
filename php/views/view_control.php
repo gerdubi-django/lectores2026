@@ -91,14 +91,18 @@ function handleGetAttendanceData() {
         if (!$authUser) {
             throw new Exception('Authentication required');
         }
-        $allowedDeptIds = getAuthorizedDepartmentIds($authUser);
-        if (empty($allowedDeptIds)) {
-            throw new Exception('No departments assigned');
-        }
-        if ($deptId === 0) {
-            $result = getAttendanceControlDataForDepartments($allowedDeptIds, $days, $startDate, $endDate);
-        } elseif (!in_array($deptId, $allowedDeptIds, true)) {
-            throw new Exception('Unauthorized department');
+        if (!isAdminUser($authUser)) {
+            $allowedDeptIds = getAuthorizedDepartmentIds($authUser);
+            if (empty($allowedDeptIds)) {
+                throw new Exception('No departments assigned');
+            }
+            if ($deptId === 0) {
+                $result = getAttendanceControlDataForDepartments($allowedDeptIds, $days, $startDate, $endDate);
+            } elseif (!in_array($deptId, $allowedDeptIds, true)) {
+                throw new Exception('Unauthorized department');
+            } else {
+                $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
+            }
         } else {
             $result = getAttendanceControlData($deptId, $days, $startDate, $endDate);
         }
@@ -296,14 +300,18 @@ function handleGetDepartmentUsers() {
     try {
         $deptId = isset($_GET['dept_id']) ? intval($_GET['dept_id']) : 0;
         $authUser = getAuthenticatedUser();
-        $allowedDeptIds = getAuthorizedDepartmentIds($authUser);
-        if (empty($allowedDeptIds)) {
-            throw new Exception('No departments assigned');
-        }
-        if ($deptId === 0) {
-            $users = getUsersByDepartments($allowedDeptIds);
-        } elseif (!in_array($deptId, $allowedDeptIds, true)) {
-            throw new Exception('Unauthorized department');
+        if (!isAdminUser($authUser)) {
+            $allowedDeptIds = getAuthorizedDepartmentIds($authUser);
+            if (empty($allowedDeptIds)) {
+                throw new Exception('No departments assigned');
+            }
+            if ($deptId === 0) {
+                $users = getUsersByDepartments($allowedDeptIds);
+            } elseif (!in_array($deptId, $allowedDeptIds, true)) {
+                throw new Exception('Unauthorized department');
+            } else {
+                $users = getUsersByDepartment($deptId);
+            }
         } else {
             $users = getUsersByDepartment($deptId);
         }
@@ -351,8 +359,12 @@ function handleLogin() {
         return;
     }
     setAuthenticatedUser($user);
-    $deptIds = getAuthUserDepartmentIds($user['AuthUserId']);
-    setAuthenticatedUserDepartments($deptIds);
+    if (!isAdminUser($user)) {
+        $deptIds = getAuthUserDepartmentIds($user['AuthUserId']);
+        setAuthenticatedUserDepartments($deptIds);
+    } else {
+        setAuthenticatedUserDepartments([]);
+    }
     echo json_encode(['success' => true]);
 }
 
