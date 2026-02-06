@@ -561,7 +561,7 @@ function renderLoginView($errorMessage, $logoutNotice) {
     <div class="login-shell">
         <div class="login-card panel-surface">
             <div class="login-header text-center mb-4">
-                <img src="/donbosco/assets/img/logo.png" alt="Logo Don Bosco" class="login-logo">
+                <img src="../../assets/img/logo.png" alt="Logo Don Bosco" class="login-logo">
                 <h2 class="mt-3">Control de Asistencia</h2>
                 <p class="text-muted mb-0">Ingresa con tu usuario para continuar.</p>
             </div>
@@ -638,7 +638,7 @@ $allDepartments = $isAdmin ? getDepartments() : [];
     <div class="attendance-control">
     <div class="attendance-header panel-hero d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center header-brand">
-            <img src="/donbosco/assets/img/logo.png" alt="Logo Don Bosco"
+            <img src="../../assets/img/logo.png" alt="Logo Don Bosco"
                  style="height: 50px; margin-right: 12px;">
             <div>
                 <h2 class="mb-1">Control de Asistencia</h2>
